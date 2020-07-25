@@ -8,6 +8,7 @@ body {
   margin: 0;
 }
 
+
 .navbar-inner li {
   line-height: 40px;
   letter-spacing: 2px;
@@ -21,7 +22,7 @@ body {
 }
 
 .fixed-top {
-  background-color: rgba(255, 255, 255);
+  background-color: rgb(246 243 255);
   /* remove the gradient */
   background-image: none !important;
   line-height: 40px !important;
@@ -42,7 +43,7 @@ body {
  /* End of Navbar */
 
  #main{
-  margin-top:100px;
+  padding-top:120px;
 }
 
 
@@ -54,16 +55,18 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #5f788a;
 }
 
-.site-header .navbar-nav .nav-link {
-  color: #cbd5db;
+
+.site-header .navbar .container .nav a.nav-link {
+  color: #5e17eb;
 }
 
-.site-header .navbar-nav .nav-link:hover {
-  color: #ffffff;
+.site-header .navbar .container .nav a.nav-link:hover {
+  color: #5e17eb;
 }
 
-.site-header .navbar-nav .nav-link.active {
+.site-header .navbar-nav a.nav-link.active {
   font-weight: 500;
+  color: #5e17eb;
 }
 
 .content-section {
@@ -80,8 +83,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a.article-title:hover {
-  color: #428bca;
-  text-decoration: none;
+  color: #138496;
+  text-decoration: underline;
 }
 
 .article-content {
@@ -104,6 +107,14 @@ a.article-title:hover {
 .article-metadata a:hover {
   color: #333;
   text-decoration: none;
+}
+
+.article-metadata #username {
+    color:#17a2b8;
+}
+
+.article-metadata #username a:hover {
+    color: #138496;
 }
 
 .article-svg {
@@ -129,19 +140,46 @@ a.article-title:hover {
 
 #footer{
   background-color: #212529;
-  color: white;
+  color: #9e9e9e;
   top:180px;
   position: relative;
-
-
 }
+
 .page-footer{
   padding-top: 20px;
 
 }
-.footer-links ul{
-  list-style: none;
+
+#footer .footer-copyright{
+     color: #9e9e9e;
 }
+
+
+#footer .page-footer .container .row .footer-links ul a{
+  list-style: none;
+  color: #9e9e9e;
+}
+
+#footer .page-footer .container .row .footer-contact i{
+  color: #17a2b8;
+  text-decoration: none;
+}
+
+#footer .page-footer .container .row .footer-contact i:hover{
+  color: #138496;
+  text-decoration: none;
+
+}
+
+#footer .page-footer .container .row .uk-inline button{
+  background-color: #17a2b8;
+}
+
+#footer .page-footer .container .row .uk-inline button:hover{
+  background-color: #138496;
+}
+
+
 
 /* MEDIA QUERIES */
 
@@ -166,7 +204,7 @@ a.article-title:hover {
       display: block;
   }
   .nav-link:hover {
-    border-bottom:  2px solid dodgerblue;
+    border-bottom:  2px solid #5e17eb;
   }
 }
 
@@ -191,7 +229,7 @@ a.article-title:hover {
       display: block;
   }
   .nav-link:hover {
-    border-bottom:  2px solid dodgerblue;
+    border-bottom:  2px solid #5e17eb;
   }
 }
 
@@ -210,7 +248,7 @@ a.article-title:hover {
     transition: border-top .3s;
   }
   .nav-link:hover {
-    border-top: 4px solid dodgerblue;
+    border-top: 4px solid #5e17eb;
   }
 
 }
@@ -223,7 +261,7 @@ a.article-title:hover {
     transition: border-top .3s;
   }
   .nav-link:hover {
-    border-top: 4px solid dodgerblue;
+    border-top: 4px solid #5e17eb;
   }
 
  }
