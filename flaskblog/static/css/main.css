@@ -1,0 +1,229 @@
+*{
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+}
+
+body {
+  background: #fafafa;
+  color: #333333;
+  margin: 0;
+}
+
+.navbar-inner li {
+  line-height: 40px;
+  letter-spacing: 2px;
+}
+
+.brand {
+  letter-spacing: 2px;
+}
+.brand a:hover {
+  text-decoration: none;
+}
+
+.fixed-top {
+  background-color: rgba(255, 255, 255);
+  /* remove the gradient */
+  background-image: none !important;
+  line-height: 40px !important;
+  box-shadow: 0 9px 6px -6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.toggle{
+  width: auto;
+  padding: 10px 20px;
+  background: #ffffff;
+  text-align: right;
+  box-sizing: border-box;
+  color: #333333;
+  cursor: pointer;
+  display: none;
+}
+
+ /* End of Navbar */
+
+ #main{
+  margin-top:100px;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+.bg-steel {
+  background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  color: #444444;
+  font-size:large;
+}
+
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+  font-size: small;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.side-menu{
+  position: fixed;
+}
+
+#footer{
+  background-color: #212529;
+  color: white;
+  top:180px;
+  position: relative;
+
+
+}
+.page-footer{
+  padding-top: 20px;
+
+}
+.footer-links ul{
+  list-style: none;
+}
+
+/* MEDIA QUERIES */
+
+/* // Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) { 
+  ul.nav.pull-right{
+    display: none;
+  }
+
+  .toggle{
+    display: block;
+  }
+  ul{
+    width: 100%;
+  }
+    ul li{
+      display: block;
+      text-align: center;
+    }
+
+    ul.active{
+      display: block;
+  }
+  .nav-link:hover {
+    border-bottom:  2px solid dodgerblue;
+  }
+}
+
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  ul.nav.pull-right{
+    display: none;
+  }
+
+  .toggle{
+    display: block;
+  }
+  ul{
+    width: 100%;
+  }
+    ul li{
+      display: block;
+      text-align: center;
+    }
+
+    ul.active{
+      display: block;
+  }
+  .nav-link:hover {
+    border-bottom:  2px solid dodgerblue;
+  }
+}
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) { 
+
+
+
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {  
+
+  .nav-link {
+    border-top: 4px solid #fafafa;
+    transition: border-top .3s;
+  }
+  .nav-link:hover {
+    border-top: 4px solid dodgerblue;
+  }
+
+}
+
+/* // Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+
+  .nav-link {
+    border-top: 4px solid #fafafa;
+    transition: border-top .3s;
+  }
+  .nav-link:hover {
+    border-top: 4px solid dodgerblue;
+  }
+
+ }
