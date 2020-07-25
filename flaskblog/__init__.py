@@ -6,7 +6,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 
-from flaskblog.config import Config
+from flaskblog.config import *
 
 db = SQLAlchemy()  # new instance of a database
 bcrypt = Bcrypt()  # new instance of bcrypt encryption for password on register
@@ -18,7 +18,7 @@ mail = Mail()
 
 def create_app(config_class = Config):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config_class)
 
     app.config.get('WHOOSH_BASE')
 
