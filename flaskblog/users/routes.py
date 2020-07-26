@@ -1,3 +1,4 @@
+import requests
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -14,10 +15,17 @@ users = Blueprint('users', __name__)
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
+
+    r = requests.get('https://restcountries.eu/rest/v2/region/africa')
+    afri = r.json()
+
     form = RegistrationForm()
+
+    form.country.choices = [(i['name'], i['name']) for i in afri]
+
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username = form.username.data, email = form.email.data, password = hashed_password)
+        user = User(username = form.username.data, email = form.email.data,country = form.country.data,  password = hashed_password)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in',
