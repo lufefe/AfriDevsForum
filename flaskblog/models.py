@@ -1,10 +1,12 @@
 from datetime import datetime
-# Serializer will be used for generating tokens for 'Forgot Password'
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+
 from flask import current_app
-from flaskblog import db, login_manager
 # UserMixin is a class that we inherit from the required methods & attributes used in managing login sessions
 from flask_login import UserMixin
+# Serializer will be used for generating tokens for 'Forgot Password'
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+
+from flaskblog import db, login_manager
 
 
 @login_manager.user_loader  # decorator used for reloading the user based on the user id stored in the session
@@ -16,6 +18,7 @@ class User(db.Model, UserMixin):  # this class is used for creating the database
     id = db.Column(db.Integer, primary_key=True)  # id attribute/column that is an integer and primary key
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    country = db.Column(db.String(20), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=True)
     posts = db.relationship('Post', backref = 'author',

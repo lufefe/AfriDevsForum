@@ -1,3 +1,4 @@
+import bleach  # secure against script injection by stripping html tags
 from flask import (render_template, url_for, flash,
                    redirect, request, abort, Blueprint)
 from flask_login import current_user, login_required
@@ -14,7 +15,8 @@ posts = Blueprint('posts', __name__)
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title = form.title.data, content = form.content.data, author = current_user)
+        cleaned_content = bleach.clean(form.content.data, tags=bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
+        post = Post(title = form.title.data, content = cleaned_content, author = current_user)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
@@ -40,7 +42,7 @@ def update_post(post_id):
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
-        post.content = form.content.data
+        post.content = bleach.clean(form.content.data, tags=bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('posts.post', post_id = post.id))

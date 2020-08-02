@@ -40,6 +40,8 @@
 				</div>
 				
 			</form>
+			{{ ckeditor.load(pkg_type="standard")}} <!-- can be "basic" or "full" -->
+			{{ ckeditor.config(name = 'content') }}
 		</div>
 
 	{% endblock content %}
