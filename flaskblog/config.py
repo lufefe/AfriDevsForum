@@ -1,12 +1,13 @@
+import json
 import os
 
 
 class Config(object):
     DEBUG = False
     TESTING = False
-    SECRET_KEY = os.environ.get('SECRET_KEY')  # set in Environment Variables in Control Panel
+    SECRET_KEY = os.environ.get('SECRET_KEY')  #
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'SQLALCHEMY_DATABASE_URI')  # database location | set in Environment Variables in Control Panel
+        'SQLALCHEMY_DATABASE_URI')  # database location
 
     # for sending email for forgot password
     MAIL_SERVER = 'smtp.googlemail.com'
@@ -17,6 +18,10 @@ class Config(object):
 
 
 class ProductionConfig(Config):
+    with open('/etc/config.json') as config_file:
+        config = json.load(config_file)
+    SECRET_KEY = config.get('SECRET_KEY')  #
+    SQLALCHEMY_DATABASE_URI = config.get('SQLALCHEMY_DATABASE_URI')
     """Uses production database server."""
     # DATABASE_URI = (production db) PostgreSQL
 
