@@ -2,6 +2,7 @@
 
 from flask import Flask
 from flask_bcrypt import Bcrypt
+from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
@@ -26,6 +27,7 @@ def create_app(config_class = Config):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+    ckeditor = CKEditor(app)
 
     from flaskblog.users.routes import users
     from flaskblog.posts.routes import posts

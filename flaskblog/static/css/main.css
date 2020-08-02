@@ -110,11 +110,12 @@ a.article-title:hover {
 }
 
 .article-metadata #username {
-    color:#17a2b8;
+    color: #5e17eb;
 }
 
-.article-metadata #username a:hover {
-    color: #138496;
+.article-metadata #username:hover {
+    color: #5e17eb;
+    text-decoration: underline;
 }
 
 .article-svg {

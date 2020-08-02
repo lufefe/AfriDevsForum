@@ -18,9 +18,7 @@ def register():
 
     r = requests.get('https://restcountries.eu/rest/v2/region/africa')
     afri = r.json()
-
     form = RegistrationForm()
-
     form.country.choices = [(i['name'], i['name']) for i in afri]
 
     if form.validate_on_submit():
@@ -60,13 +58,18 @@ def logout():
 @users.route("/account", methods = ['GET', 'POST'])
 @login_required  # decorator to tell the user must be logged in in order to access the account page/view
 def account():
+    r = requests.get('https://restcountries.eu/rest/v2/region/africa')
+    afri = r.json()
     form = UpdateAccountForm()
+    form.country.choices = [(i['name'], i['name']) for i in afri]
+    form.country.data = current_user.country
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
         current_user.username = form.username.data  # update the current user's username with the one if form
         current_user.email = form.email.data
+        current_user.country = form.country.data
         db.session.commit()
         flash('Your account has been updated', 'success')
         return redirect(url_for('users.account'))
