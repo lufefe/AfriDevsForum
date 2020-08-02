@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint
-from flaskblog.models import Post
 
+from flaskblog.models import Post
 
 main = Blueprint('main', __name__)
 
@@ -11,7 +11,7 @@ def home():
     # we will use the paginate function to limit the number of posts appearing in the home page - ...
     page = request.args.get('page', 1, type = int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page = page,
-                                                                  per_page = 5)  # order the posts by latest date
+                                                                  per_page = 7)  # order the posts by latest date
     return render_template('home.html', posts = posts, home = home)
 
 

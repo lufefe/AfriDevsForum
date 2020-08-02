@@ -4,7 +4,7 @@
 			<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
 		  <div class="media-body">
 		    <div class="article-metadata">
-		      <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+		      <a class="mr-2" id="username" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
 		       <!-- displays date in Y-m-d format-->
 		      <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small> 
 		      {% if post.author == current_user %}
@@ -15,7 +15,7 @@
 		      {% endif %}
 		    </div>
 		    <h2 class="article-title">{{ post.title }}</h2>
-		    <p class="article-content">{{ post.content }}</p>
+		    <p class="article-content">{{ post.content| safe }}</p>
 		  </div>
 		</article>
 
