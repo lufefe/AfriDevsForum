@@ -15,6 +15,7 @@ login_manager = LoginManager()  # new instance of LoginManager lib for handling 
 login_manager.login_view = 'users.login'  # telling the extension where the login view is (login function in users/routes.py)
 login_manager.login_message_category = 'info'
 mail = Mail()
+ckeditor = CKEditor()
 
 
 def create_app(config_class = Config):
@@ -27,7 +28,7 @@ def create_app(config_class = Config):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
-    ckeditor = CKEditor(app)
+    ckeditor.init_app(app)
 
     from flaskblog.users.routes import users
     from flaskblog.posts.routes import posts
