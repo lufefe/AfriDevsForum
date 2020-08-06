@@ -1,4 +1,3 @@
-import json
 import os
 
 
@@ -18,12 +17,11 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    with open('/etc/config.json') as config_file:
-        config = json.load(config_file)
-    SECRET_KEY = config.get('SECRET_KEY')  #
-    SQLALCHEMY_DATABASE_URI = config.get('SQLALCHEMY_DATABASE_URI')
+    # with open('/etc/config.json') as config_file:
+    # config = json.load(config_file)
+    # SECRET_KEY = config.get('SECRET_KEY')  #
+    # SQLALCHEMY_DATABASE_URI = config.get('SQLALCHEMY_DATABASE_URI')
     """Uses production database server."""
-    # DATABASE_URI = (production db) PostgreSQL
 
 
 class DevelopmentConfig(Config):
