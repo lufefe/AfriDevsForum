@@ -138,6 +138,15 @@ a.article-title:hover {
 .side-menu{
   position: fixed;
 }
+.side-menu .item .menu #tags-menu
+{
+   margin: 5px;
+    position: relative;
+}
+
+.side-menu .item .menu .column{
+    position: relative;
+}
 
 #footer{
   background-color: #212529;
