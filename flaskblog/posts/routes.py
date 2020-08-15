@@ -4,7 +4,7 @@ from flask import (render_template, url_for, flash,
 from flask_login import current_user, login_required
 
 from flaskblog import db
-from flaskblog.models import Post
+from flaskblog.models import Post, Tag
 from flaskblog.posts.forms import PostForm
 
 posts = Blueprint('posts', __name__)
@@ -15,8 +15,12 @@ posts = Blueprint('posts', __name__)
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        cleaned_content = bleach.clean(form.content.data, tags=bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
+        cleaned_content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
+
         post = Post(title = form.title.data, content = cleaned_content, author = current_user)
+        tags = Tag(name = form.tag.data)
+        post.tag.append(tags)
+
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
@@ -30,6 +34,7 @@ def new_post():
 def post(post_id):
     post = Post.query.get_or_404(
         post_id)  # get_or_404 method gets the post with the post_id and if it doesn't exist it returns a 404 error (page doesn't exist)
+
     return render_template('post.html', title = post.title, post = post)
 
 
@@ -37,18 +42,21 @@ def post(post_id):
 @login_required
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
+
     if post.author != current_user:
         abort(403)  # abort function is for showing the passed error page (error 403 - forbidden page)
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = bleach.clean(form.content.data, tags=bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
+
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('posts.post', post_id = post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
+
     return render_template('create_post.html', title = 'Update Post',
                            form = form, legend = 'Update Post')
 
