@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 
 from django.utils.text import slugify
@@ -8,6 +9,10 @@ from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from flaskblog import db, login_manager
+
+
+def slugify(s):
+    return re.sub('[^\w]+', '-', s).lower()
 
 
 @login_manager.user_loader  # decorator used for reloading the user based on the user id stored in the session
@@ -45,10 +50,10 @@ class User(db.Model, UserMixin):  # this class is used for creating the database
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 
-entry_tags = db.Table('entry_tags',
-                      db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
-                      db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
-                      )
+post_tag = db.Table('post_tag',
+                    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+                    db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
+                    )
 
 
 class Post(db.Model):
@@ -58,7 +63,7 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)  # a foreign key
 
-    tag = db.relationship('Tag', secondary = entry_tags, backref = 'post', lazy = 'dynamic')
+    tag = db.relationship('Tag', secondary = post_tag, backref = 'post', lazy = 'dynamic')
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
