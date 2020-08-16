@@ -6,18 +6,31 @@
 		    <div class="article-metadata">
 		      <a class="mr-2" id="username" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
 		       <!-- displays date in Y-m-d format-->
-		      <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small> 
-		      {% if post.author == current_user %}
-		      	<div>
-		      		<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
-		      		<button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
-		      	</div>
-		      {% endif %}
-		    </div>
-		    <h2 class="article-title">{{ post.title }}</h2>
-		    <p class="article-content">{{ post.content| safe }}</p>
-		  </div>
-		</article>
+                <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                {% if post.author == current_user %}
+                <div>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1"
+                       href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
+                    <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal"
+                            data-target="#deleteModal">Delete
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+              <h2 class="article-title">{{ post.title }}</h2>
+              <p class="article-content">{{ post.content| safe }}</p>
+
+              <div class="ui three column grid" wfd-id="226" id="tags-menu">
+                  {% for i in post.tag.all() %}
+                  <div class="column" wfd-id="229">
+                      <a href="#" class="ui tag label">{{ i.name }}</a>
+                  </div>
+                  {% endfor %}
+              </div>
+
+          </div>
+
+        </article>
 
 		<!-- Modal -->
 		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
