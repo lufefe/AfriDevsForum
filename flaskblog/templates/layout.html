@@ -120,9 +120,17 @@
                   <div class="item">
                       <h5>Tags</h5>
                       <div class="menu" wfd-id="188">
-                          <a href="#" class="item">#python #auth</a>
+                          <div class="ui three column grid" wfd-id="226" id="tags-menu">
+
+                              {% for tag in tags %}
+                              <div class="column" wfd-id="229"><a href="#" class="ui tag label">{{ tag.name }}</a></div>
+                              {% endfor %}
+
+                          </div>
+
                       </div>
                   </div>
+
 
               </div>
           </div>

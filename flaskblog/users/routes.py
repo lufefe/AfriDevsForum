@@ -8,6 +8,9 @@ from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountFor
                                    RequestResetForm, ResetPasswordForm)
 from flaskblog.users.utils import save_picture, send_reset_email
 
+r = requests.get('https://restcountries.eu/rest/v2/region/africa')
+afri = r.json()
+
 users = Blueprint('users', __name__)
 
 
@@ -16,14 +19,13 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
 
-    r = requests.get('https://restcountries.eu/rest/v2/region/africa')
-    afri = r.json()
     form = RegistrationForm()
     form.country.choices = [(i['name'], i['name']) for i in afri]
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username = form.username.data, email = form.email.data,country = form.country.data,  password = hashed_password)
+        user = User(username = form.username.data, email = form.email.data, country = form.country.data,
+                    password = hashed_password)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in',
@@ -58,11 +60,9 @@ def logout():
 @users.route("/account", methods = ['GET', 'POST'])
 @login_required  # decorator to tell the user must be logged in in order to access the account page/view
 def account():
-    r = requests.get('https://restcountries.eu/rest/v2/region/africa')
-    afri = r.json()
     form = UpdateAccountForm()
     form.country.choices = [(i['name'], i['name']) for i in afri]
-    form.country.data = current_user.country
+
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
@@ -76,6 +76,7 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
+        form.country.data = current_user.country
     image_file = url_for('static', filename = 'profile_pics/' + current_user.image_file)
     return render_template('account.html', title = 'Account', image_file = image_file, form = form)
 

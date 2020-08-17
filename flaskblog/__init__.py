@@ -1,7 +1,7 @@
 # import flask
-
 from flask import Flask
 from flask_bcrypt import Bcrypt
+from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_mail import Mail
@@ -16,9 +16,10 @@ login_manager.login_view = 'users.login'  # telling the extension where the logi
 login_manager.login_message_category = 'info'
 mail = Mail()
 ckeditor = CKEditor()
+bootstrap = Bootstrap()
 
 
-def create_app(config_class = ProductionConfig):
+def create_app(config_class = DevelopmentConfig):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
@@ -29,6 +30,7 @@ def create_app(config_class = ProductionConfig):
     login_manager.init_app(app)
     mail.init_app(app)
     ckeditor.init_app(app)
+    bootstrap.init_app(app)
 
     from flaskblog.users.routes import users
     from flaskblog.posts.routes import posts
