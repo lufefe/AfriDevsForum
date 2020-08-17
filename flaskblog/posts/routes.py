@@ -53,24 +53,24 @@ def update_post(post_id):
     if form.validate_on_submit():
         post_update.title = form.title.data
         post_update.content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
-
         for i in form.tags.data:
-            tags = Tag(name = i)  # adds tag to TAG db Table
-            post_update.tag.append(tags)  # adds tag to post_tag table with post id.
+            exists = db.session.query(db.exists().where(Tag.name == i)).scalar()
+            if not exists:
+                tags = Tag(name = i)  # adds tag to TAG db Table
+                post_update.tag.append(tags)  # adds tag to post_tag table with post id.
         try:
             db.session.commit()
+            flash('Your post has been updated!', 'success')
         except exc.IntegrityError:
             db.session.rollback()
+            flash('Your post has been couldn\'t be updated!', 'warning')
 
-        flash('Your post has been updated!', 'success')
         return redirect(url_for('posts.post', post_id = post_update.id))
     elif request.method == 'GET':
         form.title.data = post_update.title
         form.content.data = post_update.content
         tags = [x.name for i, x in enumerate(post_update.tag.all())]  # loop through all the tags and display them
         form.tags.data = tags
-        print(tags)
-        # for i in post_update.tag.all():
 
     return render_template('create_post.html', title = 'Update Post',
                            form = form, legend = 'Update Post')
@@ -79,10 +79,10 @@ def update_post(post_id):
 @posts.route("/post/<int:post_id>/delete", methods = ['POST'])
 @login_required
 def delete_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
+    post_delete = Post.query.get_or_404(post_id)
+    if post_delete.author != current_user:
         abort(403)  # abort function is for showing the passed error page (error 403 - forbidden page)
-    db.session.delete(post)
+    db.session.delete(post_delete)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('main.home'))
