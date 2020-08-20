@@ -56,3 +56,8 @@ class PostForm(FlaskForm):
     tags = TagListField('Tags', separator = ',',
                         validators = [Length(max = 8, message = "You can only use up to 8 tags.")])
     submit = SubmitField('Post')
+
+
+class CommentForm(FlaskForm):
+    body = StringField('', validators = [DataRequired()])
+    submit = SubmitField('Submit')

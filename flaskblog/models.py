@@ -1,12 +1,14 @@
 import re
 from datetime import datetime
 
+import bleach
 from django.utils.text import slugify
 from flask import current_app
 # UserMixin is a class that we inherit from the required methods & attributes used in managing login sessions
 from flask_login import UserMixin
 # Serializer will be used for generating tokens for 'Forgot Password'
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from markdown import markdown
 
 from flaskblog import db, login_manager
 
@@ -29,6 +31,7 @@ class User(db.Model, UserMixin):  # this class is used for creating the database
     password = db.Column(db.String(60), nullable = True)
     posts = db.relationship('Post', backref = 'author',
                             lazy = True)  # defining a relationship between user(author) & post
+    comments = db.relationship('Comment', backref = 'author', lazy = 'dynamic')
 
     # author is a back reference which gives us access to the entire User model and the attributes
     # the posts variable will then be used in routes and views
@@ -62,8 +65,8 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     content = db.Column(db.Text, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)  # a foreign key
-
     tag = db.relationship('Tag', secondary = post_tag, backref = 'post', lazy = 'dynamic')
+    comments = db.relationship('Comment', backref = 'post', lazy = 'dynamic')
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
@@ -80,3 +83,24 @@ class Tag(db.Model):
 
     def __repr__(self):
         return '<Tag %s>' % self.name
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key = True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index = True, default = datetime.utcnow)
+    disabled = db.Column(db.Boolean)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i',
+                        'strong']
+        target.body_html = bleach.linkify(bleach.clean(markdown(value, output_format = 'html'),
+                                                       tags = allowed_tags, strip = True))
+
+
+db.event.listen(Comment.body, 'set', Comment.on_changed_body)

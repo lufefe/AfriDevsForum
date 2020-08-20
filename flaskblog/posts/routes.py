@@ -1,12 +1,12 @@
 import bleach  # secure against script injection by stripping html tags
 from flask import (render_template, url_for, flash,
-                   redirect, request, abort, Blueprint)
+                   redirect, request, abort, Blueprint, current_app)
 from flask_login import current_user, login_required
 from sqlalchemy import exc
 
 from flaskblog import db
-from flaskblog.models import Post, Tag
-from flaskblog.posts.forms import PostForm
+from flaskblog.models import Post, Tag, Comment
+from flaskblog.posts.forms import PostForm, CommentForm
 
 posts = Blueprint('posts', __name__)
 
@@ -37,9 +37,27 @@ def new_post():
 def post(post_id):
     # get_or_404 method gets the post with the post_id and if it doesn't exist it returns a 404 error (
     # page doesn't exist)
-    view_post = Post.query.get_or_404(post_id)
 
-    return render_template('post.html', title = view_post.title, post = view_post)
+    view_post = Post.query.get_or_404(post_id)
+    form = CommentForm()
+
+    if form.validate_on_submit():
+        comment = Comment(body = form.body.data, post = view_post,
+                          author = current_user._get_current_object())  # current_user._get_current_object()
+        db.session.add(comment)
+        flash('Your comment has been added', 'success')
+        return redirect(url_for('.post', post_id = view_post.id, page = -1))
+
+    page = request.args.get('page', 1, type = int)
+    if page == -1:
+        page = (view_post.comments.count() - 1) / current_app.config['FLASKY_COMMENTS_PER_PAGE'] + 1
+
+    pagination = view_post.comments.order_by(Comment.timestamp.asc()).paginate(page, per_page = current_app.config[
+        'FLASKY_COMMENTS_PER_PAGE'], error_out = False)
+    comments = pagination.items
+
+    return render_template('post.html', title = view_post.title, post = view_post, form = form, comments = comments,
+                           pagination = pagination)
 
 
 @posts.route("/post/<int:post_id>/update", methods = ['GET', 'POST'])

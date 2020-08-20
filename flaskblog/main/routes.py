@@ -12,7 +12,7 @@ def home():
     page = request.args.get('page', 1, type = int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page = page,
                                                                   per_page = 7)  # order the posts by latest date
-    tags = Tag.query.distinct(Tag.name)
+    tags = Tag.query.distinct(Tag.name).limit(8)
     return render_template('home.html', posts = posts, tags = tags, home = home)
 
 

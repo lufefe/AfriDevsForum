@@ -20,26 +20,75 @@
               <h2 class="article-title">{{ post.title }}</h2>
               <p class="article-content">{{ post.content| safe }}</p>
 
-              <div class="ui three column grid" wfd-id="226" id="tags-menu">
-                  {% for i in post.tag.all() %}
-                  <div class="column" wfd-id="229">
-                      <a href="#" class="ui tag label">{{ i.name }}</a>
-                  </div>
-                  {% endfor %}
-              </div>
+			  <div class="ui three column grid" wfd-id="226" id="tags-menu">
+				  {% for i in post.tag.all() %}
+				  <div class="column" wfd-id="229">
+					  <a href="#" class="ui tag label">{{ i.name }}</a>
+				  </div>
+				  {% endfor %}
+			  </div>
 
-          </div>
+		  </div>
 
-        </article>
+			<div class="article-metadata">
+				<a href="{{ url_for('.post', post_id=post.id) }}#comments">
+				<span class="label label-primary">
+					{{ post.comments.count() }} Comments
+				</span>
+				</a>
+			</div>
 
-		<!-- Modal -->
-		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="deleteModalLabel">Delete Post ?</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
+		</article>
+
+<!--Comments-->
+<div class="ui comments" wfd-id="196">
+	{% if post.comments.count() > 0 %}
+	<h3 class="ui dividing header">Comments</h3>
+	{% for comment in comments %}
+	<div class="comment" wfd-id="219">
+		<a class="avatar">
+			<img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png">
+		</a>
+		<div class="content" wfd-id="220">
+			<!--      				<a class="author">{{post.comments.author}}</a>-->
+			<div class="metadata" wfd-id="223">
+				<!--        				<span class="date" wfd-id="224">{{ post.comments.timestamp }}</span>-->
+			</div>
+			<div class="text" wfd-id="222">
+				<!--						{{ post.comments.body }}-->
+			</div>
+			<form class="ui reply form" wfd-id="197">
+				<grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none;"
+									 class="_1KJtL"></grammarly-extension>
+				<div class="field" wfd-id="199">
+					<textarea wfd-id="270" spellcheck="false"></textarea>
+				</div>
+				<div class="ui blue labeled submit icon button" wfd-id="198">
+					<i class="icon edit"></i> Add Reply
+				</div>
+			</form>
+			<div class="actions" wfd-id="221">
+				<a class="reply">Reply</a>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% else %}
+	<h3 class="ui dividing header">No Comments</h3>
+	{% endif %}
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalLabel">Delete Post ?</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
 		      <div class="modal-footer">

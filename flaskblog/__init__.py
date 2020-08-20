@@ -12,6 +12,7 @@ from flaskblog.config import *
 db = SQLAlchemy()  # new instance of a database
 bcrypt = Bcrypt()  # new instance of bcrypt encryption for password on register
 login_manager = LoginManager()  # new instance of LoginManager lib for handling user login sessions
+login_manager.session_protection = 'strong'
 login_manager.login_view = 'users.login'  # telling the extension where the login view is (login function in users/routes.py)
 login_manager.login_message_category = 'info'
 mail = Mail()
