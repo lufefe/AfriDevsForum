@@ -1,12 +1,11 @@
 import bleach  # secure against script injection by stripping html tags
 from flask import (render_template, url_for, flash,
-                   redirect, request, abort, current_app, Blueprint)
+                   redirect, request, abort, Blueprint, current_app)
 from flask_login import current_user, login_required
 from sqlalchemy import exc
 
 from flaskblog import db
-from flaskblog.decorators import permission_required
-from flaskblog.models import Post, Tag, Comment, Permission
+from flaskblog.models import Post, Tag, Comment
 from flaskblog.posts.forms import PostForm, CommentForm
 
 posts = Blueprint('posts', __name__)
@@ -17,10 +16,9 @@ posts = Blueprint('posts', __name__)
 def new_post():
     form = PostForm()
 
-    if current_user.can(Permission.WRITE_ARTICLES) and form.validate_on_submit():
+    if form.validate_on_submit():
         cleaned_content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
-        create_post = Post(title = form.title.data, content = cleaned_content,
-                           author = current_user._get_current_object())
+        create_post = Post(title = form.title.data, content = cleaned_content, author = current_user)
 
         for i in form.tags.data:
             tags = Tag(name = i)  # adds tag to TAG db Table
@@ -34,11 +32,12 @@ def new_post():
                            form = form, legend = 'New Post')
 
 
-# for viewing a selected post and comments
-@posts.route("/post/<int:post_id>", methods = ['GET', 'POST'])
+# for viewing a selected post
+@posts.route("/post/<int:post_id>")  # passing variable post_id to the url - post_id is an Integer
 def post(post_id):
-    # get_or_404() method gets the post with the post_id and if it doesn't exist it returns a 404 error (
+    # get_or_404 method gets the post with the post_id and if it doesn't exist it returns a 404 error (
     # page doesn't exist)
+
     view_post = Post.query.get_or_404(post_id)
     form = CommentForm()
 
@@ -46,13 +45,12 @@ def post(post_id):
         comment = Comment(body = form.body.data, post = view_post,
                           author = current_user._get_current_object())  # current_user._get_current_object()
         db.session.add(comment)
-        db.session.commit()
         flash('Your comment has been added', 'success')
         return redirect(url_for('.post', post_id = view_post.id, page = -1))
 
     page = request.args.get('page', 1, type = int)
     if page == -1:
-        page = (view_post.comments.count() - 1) // current_app.config['FLASKY_COMMENTS_PER_PAGE'] + 1
+        page = (view_post.comments.count() - 1) / current_app.config['FLASKY_COMMENTS_PER_PAGE'] + 1
 
     pagination = view_post.comments.order_by(Comment.timestamp.asc()).paginate(page, per_page = current_app.config[
         'FLASKY_COMMENTS_PER_PAGE'], error_out = False)
@@ -67,7 +65,7 @@ def post(post_id):
 def update_post(post_id):
     post_update = Post.query.get_or_404(post_id)
 
-    if post_update.author != current_user and not current_user.can(Permission.ADMINISTRATOR):
+    if post_update.author != current_user:
         abort(403)  # abort function is for showing the passed error page (error 403 - forbidden page)
     form = PostForm()
     if form.validate_on_submit():
@@ -106,41 +104,3 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('main.home'))
-
-
-@posts.route('/moderate')
-@login_required
-@permission_required(Permission.MODERATE_COMMENTS)
-def moderate():
-    page = request.args.get('page', 1, type = int)
-    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(
-        page, per_page = current_app.config['FLASKY_COMMENTS_PER_PAGE'],
-        error_out = False)
-    comments = pagination.items
-    return render_template('moderate_comments.html', comments = comments,
-                           pagination = pagination, page = page)
-
-
-@posts.route('/moderate/enable/<int:id>')
-@login_required
-@permission_required(Permission.MODERATE_COMMENTS)
-def moderate_enable(id):
-    comment = Comment.query.get_or_404(id)
-    comment.disabled = False
-    # db.session.add(comment)
-    db.session.commit()
-    return redirect(url_for('.moderate_comments',
-                            page = request.args.get('page', 1, type = int)))
-
-
-@posts.route('/moderate/disable/<int:id>')
-@login_required
-@permission_required(Permission.MODERATE_COMMENTS)
-def moderate_disable(id):
-    comment = Comment.query.get_or_404(id)
-    comment.disabled = True
-    # db.session.add(comment)
-    db.session.commit()
-    return redirect(url_for('.moderate_comments',
-                            page = request.args.get('page', 1, type = int)))
-

@@ -4,18 +4,17 @@
 			<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
 		  <div class="media-body">
 		    <div class="article-metadata">
-				<a class="mr-2" id="username" href="{{ url_for('users.user_profile', username=post.author.username) }}">{{
-					post.author.username }}</a>
-				<!-- displays date in Y-m-d format-->
-				<small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
-				{% if post.author == current_user %}
-				<div>
-					<a class="btn btn-secondary btn-sm mt-1 mb-1"
-					   href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
-					<button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal"
-							data-target="#deleteModal">Delete
-					</button>
-				</div>
+		      <a class="mr-2" id="username" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+		       <!-- displays date in Y-m-d format-->
+                <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                {% if post.author == current_user %}
+                <div>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1"
+                       href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
+                    <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal"
+                            data-target="#deleteModal">Delete
+                    </button>
+                </div>
                 {% endif %}
             </div>
               <h2 class="article-title">{{ post.title }}</h2>
@@ -41,49 +40,23 @@
 
 		</article>
 
-
 <!--Comments-->
 <div class="ui comments" wfd-id="196">
-	{% if current_user.is_authenticated %}
-	<form class="ui reply form" method="POST" action="" enctype="multipart/form-data">
-		{{ form.hidden_tag() }}
-		<div class="ui field" wfd-id="152">
-			<div class="form-group">
-				{{ form.body.label(class='form-control-label') }}
-				{{ form.body(class='form-control form-control-lg') }}
-			</div>
-		</div>
-		<div class="form-group">
-			{{form.submit(class='btn btn-info')}}
-		</div>
-	</form>
-	{% endif %}
 	{% if post.comments.count() > 0 %}
 	<h3 class="ui dividing header">Comments</h3>
-
 	{% for comment in comments %}
 	<div class="comment" wfd-id="219">
 		<a class="avatar">
-			<img src="{{ url_for('static', filename='profile_pics/' + comment.author.image_file) }}">
+			<img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png">
 		</a>
 		<div class="content" wfd-id="220">
-			<a class="author">{{comment.author.username}}</a>
+			<!--      				<a class="author">{{post.comments.author}}</a>-->
 			<div class="metadata" wfd-id="223">
-				<span class="date" wfd-id="224">{{ moment(comment.timestamp).fromNow() }}</span>
+				<!--        				<span class="date" wfd-id="224">{{ post.comments.timestamp }}</span>-->
 			</div>
-
-			{% if comment.disabled %}
-			<div class="text" wfd-id="222">This comment has been disabled by a moderator.</div>
-			{% endif %}
-			{% if moderate or not comment.disabled %}
-			{% if comment.body_html %}
-			<div class="text" wfd-id="222">{{ comment.body_html | safe }}</div>
-			{% else %}
-			<div class="text" wfd-id="222">{{ comment.body }}</div>
-			{% endif %}
-			{% endif %}
-
-			{% if post.author == current_user %}
+			<div class="text" wfd-id="222">
+				<!--						{{ post.comments.body }}-->
+			</div>
 			<form class="ui reply form" wfd-id="197">
 				<grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none;"
 									 class="_1KJtL"></grammarly-extension>
@@ -94,22 +67,12 @@
 					<i class="icon edit"></i> Add Reply
 				</div>
 			</form>
-			{% endif %}
+			<div class="actions" wfd-id="221">
+				<a class="reply">Reply</a>
+			</div>
 		</div>
 	</div>
 	{% endfor %}
-
-	{% if moderate %}
-	<br>
-	{% if comment.disabled %}
-	<a class="btn btn-default btn-xs" href="{{ url_for('.moderate_enable',
-			id=comment.id, page=page) }}">Enable</a>
-	{% else %}
-	<a class="btn btn-danger btn-xs" href="{{ url_for('.moderate_disable',
-			id=comment.id, page=page) }}">Disable</a>
-	{% endif %}
-	{% endif %}
-
 	{% else %}
 	<h3 class="ui dividing header">No Comments</h3>
 	{% endif %}
@@ -126,16 +89,16 @@
 				<h5 class="modal-title" id="deleteModalLabel">Delete Post ?</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
-					<input type="submit" value="Delete" class="btn btn-danger">
-				</form>
-			</div>
+		        </button>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		        <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+		        	<input type="submit" value="Delete" class="btn btn-danger">
+		        </form>
+		      </div>
+		    </div>
+		  </div>
 		</div>
-	</div>
-</div>
 
-{% endblock content %}
+	{% endblock content %}
