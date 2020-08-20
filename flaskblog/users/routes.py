@@ -1,3 +1,5 @@
+import json
+
 import requests
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
@@ -8,8 +10,12 @@ from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountFor
                                    RequestResetForm, ResetPasswordForm)
 from flaskblog.users.utils import save_picture, send_reset_email
 
-r = requests.get('https://restcountries.eu/rest/v2/region/africa')
-afri = r.json()
+try:
+    r = requests.get('https://restcountries.eu/rest/v2/region/africa')
+    countries = r.json()
+except ValueError:
+    with open('flaskblog\static\json\countries.json') as json_file:
+        countries = json.load(json_file)
 
 users = Blueprint('users', __name__)
 
@@ -20,7 +26,7 @@ def register():
         return redirect(url_for('main.home'))
 
     form = RegistrationForm()
-    form.country.choices = [(i['name'], i['name']) for i in afri]
+    form.country.choices = [(i['name'], i['name']) for i in countries]
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -61,7 +67,7 @@ def logout():
 @login_required  # decorator to tell the user must be logged in in order to access the account page/view
 def account():
     form = UpdateAccountForm()
-    form.country.choices = [(i['name'], i['name']) for i in afri]
+    form.country.choices = [(i['name'], i['name']) for i in countries]
 
     if form.validate_on_submit():
         if form.picture.data:
