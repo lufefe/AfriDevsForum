@@ -8,7 +8,7 @@ from flaskblog import db, bcrypt
 from flaskblog.models import User, Post
 from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
-from flaskblog.users.utils import save_picture, send_reset_email
+from flaskblog.users.utils import save_picture, send_reset_email, send_confirmation_email
 
 try:
     r = requests.get('https://restcountries.eu/rest/v2/region/africa')
@@ -18,6 +18,26 @@ except ValueError:
         countries = json.load(json_file)
 
 users = Blueprint('users', __name__)
+
+
+@users.before_app_request
+def before_request():
+    # user = User.query.get(3)
+    # db.session.delete(user)
+    # db.session.commit()
+    if current_user.is_authenticated:
+        if not current_user.confirmed \
+                and request.endpoint \
+                and request.blueprint != 'users' \
+                and request.endpoint != 'static':
+            return redirect(url_for('users.unconfirmed'))
+
+
+@users.route("/unconfirmed")
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('main.home'))
+    return render_template('unconfirmed.html')
 
 
 @users.route("/register", methods = ['GET', 'POST'])
@@ -34,8 +54,10 @@ def register():
                     password = hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in',
-              'success')  # messages that pop up, 'suucess' is used for bootstrap
+        send_confirmation_email(user)
+        flash('A confirmation email has been sent to you by email.', 'info')
+        # flash('Your account has been created! You are now able to log in',
+        #     'success')  # messages that pop up, 'success' is used for bootstrap
         return redirect(url_for('users.login'))
     return render_template('register.html', title = 'Register', form = form)
 
@@ -130,3 +152,24 @@ def reset_token(token):
               'success')  # messages that pop up, 'suucess' is used for bootstrap
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title = 'Reset Password', form = form)
+
+
+@users.route("/confirm/<token>", methods = ['GET', 'POST'])
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('main.home'))
+    if current_user.confirm(token):
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!', 'success')
+    else:
+        flash('The confirmation link is invalid or has expired.', 'warning')
+    return redirect(url_for('main.home'))
+
+
+@users.route('/confirm')
+@login_required
+def resend_confirmation():
+    send_confirmation_email(current_user)
+    flash('A new confirmation email has been sent to you by email.', 'success')
+    return redirect(url_for('users.login'))

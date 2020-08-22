@@ -9,7 +9,7 @@ class Config(object):
         'SQLALCHEMY_DATABASE_URI')  # database location
     FLASKY_COMMENTS_PER_PAGE = 3
     # for sending email for forgot password
-    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USER')  # set in Environment Variables in Control Panel
