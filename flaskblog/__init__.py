@@ -5,11 +5,13 @@ from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 from flaskblog.config import *
 
 db = SQLAlchemy()  # new instance of a database
+migrate = Migrate()
 bcrypt = Bcrypt()  # new instance of bcrypt encryption for password on register
 login_manager = LoginManager()  # new instance of LoginManager lib for handling user login sessions
 login_manager.session_protection = 'strong'
@@ -27,6 +29,7 @@ def create_app(config_class = DevelopmentConfig):
     app.config.get('WHOOSH_BASE')
 
     db.init_app(app)
+    migrate.init_app(app, db)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
