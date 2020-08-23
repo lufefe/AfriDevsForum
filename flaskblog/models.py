@@ -56,7 +56,7 @@ class User(db.Model, UserMixin):  # this class is used for creating the database
     email = db.Column(db.String(120), unique = True, nullable = False)
     country = db.Column(db.String(20), nullable = False)
     about_me = db.Column(db.Text())
-    member_since = db.Column(db.DateTime(), default = datetime.utcnow)
+    member_since = db.Column(db.DateTime, default = datetime.utcnow)
     image_file = db.Column(db.String(20), nullable = False, default = 'default.jpg')
     password = db.Column(db.String(60), nullable = True)
     confirmed = db.Column(db.Boolean, default = False)
@@ -69,7 +69,7 @@ class User(db.Model, UserMixin):  # this class is used for creating the database
         super(User, self).__init__(**kwargs)
         if self.role is None:
             if self.email == current_app.config['FLASKY_ADMIN']:
-                self.role = Role.query.filter_by(permissions = 0xff).first()
+                self.role = Role.query.filter_by(name = 'Administrator').first()
             if self.role is None:
                 self.role = Role.query.filter_by(default = True).first()
 
