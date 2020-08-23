@@ -37,7 +37,6 @@ class LoginForm(FlaskForm):
 
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username', validators = [DataRequired(), Length(min = 2, max = 20)])
-    name = StringField('Full name', validators = [Length(0, 64)])
     email = StringField('Email', validators = [DataRequired(), Email()])
     country = SelectField('Country', validate_choice = True)
     about_me = TextAreaField('About me')
@@ -85,8 +84,8 @@ class EditProfileAdminForm(FlaskForm):
                                               'numbers, dots or underscores')])
     confirmed = BooleanField('Confirmed')
     role = SelectField('Role', coerce = int)
-    name = StringField('Full name', validators = [Length(0, 64)])
-    country = SelectField('Country', validate_choice = True)
+    name = StringField('Real name', validators = [Length(0, 64)])
+    location = StringField('Location', validators = [Length(0, 64)])
     about_me = TextAreaField('About me')
     submit = SubmitField('Submit')
 

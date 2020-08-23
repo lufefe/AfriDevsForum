@@ -1,8 +1,7 @@
-from flask import render_template, request, Blueprint
+from flask import render_template, request
 
+from flaskblog.main import main
 from flaskblog.models import Post, Tag
-
-main = Blueprint('main', __name__)
 
 
 @main.route("/")

@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Required meta tags -->
+ 	<!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!--My CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main2.css') }}">
 
     <!--UIKit CSS-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit.min.css') }}"/>
@@ -16,7 +14,6 @@
     <!--Semantic-UI-->
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-
     <!--Node.js <NPM>-->
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
 
@@ -26,16 +23,13 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
-    <link rel="icon" href="{{ url_for('static', filename= 'site_pics/site_logo_2_trans_dark.png') }}">
+    <link rel="icon" href="{{ url_for('static', filename= 'site_pics/site_logo_2.png') }}">
 
     {% if title %}
     <title>ADF - {{ title }}</title>
 	{% else %}
     <title>ADF</title>
-    {% endif %}
-
-    {{ moment.include_jquery() }}
-    {{ moment.include_moment() }}
+	{% endif %}
 </head>
 
 <body>
@@ -44,35 +38,22 @@
         <nav class="navbar fixed-top">
             <div class="container">
                 <div class="brand">
-                    <a href="{{ url_for('main.home') }}"><img src="/static/site_pics/site_logo_1_trans.png"
-                                                              id="brand-logo" width="55" height="55"></a>
-                    <!--                    <a href="{{ url_for('main.home') }}">African Developers Forum</a>-->
+                    <a href="{{ url_for('main.home') }}"><img src="/static/site_pics/site_logo_1.png" width="55" height="55"></a>
+<!--                    <a href="{{ url_for('main.home') }}">African Developers Forum</a>-->
                 </div>
                 <div class="toggle">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </div>
-                <ul class="ui nav pull-right">
+                <ul class="nav pull-right">
                     <!--<li><a class="nav-link" href="{{ url_for('main.home') }}">Home</a></li>-->
 
                     {% if current_user.is_authenticated %}
-                    <li><a class="nav-link" href="{{ url_for('posts.new_post') }}"><i class="pen square icon"></i>New
-                        Post</a></li>
-                    <li><a class="nav-link" href="{{ url_for('users.account') }}"><i class="smile icon"></i>Profile</a>
-                    </li>
-                    <li><a class="nav-link" href="{{ url_for('users.logout') }}"><i class="sign-in icon"></i>Logout</a>
-                    </li>
-                    {% else %}
-                    <li><a class="nav-link" href="{{ url_for('users.login') }}"><i class="sign-in icon"></i>Login</a>
-                    </li>
-                    <li><a class="nav-link" href="{{ url_for('users.register') }}"><i class="user icon"></i>Register</a>
-                    </li>
-                    {% endif %}
-
-                    {% if current_user.can(Permission.MODERATE_COMMENTS) %}
-                    {% if current_user.is_authenticated %}
-                    <li><a class="nav-link" href="{{ url_for('main.moderate') }}">Moderate Comments</a></li>
+                    <li><a class="nav-link"  href="{{ url_for('posts.new_post') }}">New Post</a></li>
+                    <li><a class="nav-link" href="{{ url_for('users.account') }}">Account</a></li>
                     <li><a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a></li>
-                    {% endif %}
+                    {% else %}
+                    <li><a class="nav-link" href="{{ url_for('users.login') }}">Login</a></li>
+                    <li><a class="nav-link" href="{{ url_for('users.register') }}">Register</a></li>
                     {% endif %}
 
                 </ul>
@@ -92,12 +73,12 @@
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-                {% block content %}{% endblock content %}
+                {% block content %}{% endblock %}
             </div>
 
             <!--Side Bar Menu-->
             <div class="six wide column">
-                {% block side_bar %} {% endblock side_bar %}
+                {% block side_bar %} {% endblock %}
 
             </div>
         </div>
@@ -132,19 +113,14 @@
                 <div class="col-lg-3 col-md-6 footer-info left">
                     <h3>African Developers Forum</h3>
                     <p>A forum developed for developers in Africa to come up with solutions for our Continent.</p>
-
-                    <img class="ui circular image" src="/static/site_pics/site_logo_2_trans_orange.png" width="55"
-                         height="55">
-
                 </div>
                 <div class="col-lg-3 col-md-6 footer-links">
                     <h4>Useful Links</h4>
                     <ul class="uk-list uk-list-divider">
                         <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.home') }}">Home</a></li>
                         <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.about') }}">About</a></li>
-                        <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.home') }}">Advertising</a></li>
-                        <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.contact') }}">Contact Us</a>
-                        </li>
+                        <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.home') }}">Products</a></li>
+                        <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.home') }}">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6 footer-contact">
