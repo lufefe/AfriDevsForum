@@ -7,7 +7,7 @@
 		 src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
 	<div class="media-body">
 		<div class="article-metadata">
-			<a class="mr-2" id="username" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{
+			<a class="mr-2" id="username" href="{{ url_for('users.user_profile', username=post.author.username) }}">{{
 				post.author.username }}</a>
 			<!-- displays date in Y-m-d format-->
 			<small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
@@ -47,3 +47,60 @@
 {%endif %}
 {% endblock content %}
 
+{% block side_bar %}
+<div class="side-menu">
+	<div class="ui vertical menu fluid" wfd-id="184">
+		<div class="item" wfd-id="189">
+			<form method="get" action="" class="ui action input" wfd-id="50">
+				<input type="text" placeholder="Search..." name="query" wfd-id="222">
+				<button class="ui icon button" wfd-id="255">
+					<i class="search icon"></i>
+				</button>
+			</form>
+		</div>
+
+		<div class="item" wfd-id="187">
+			<h5>Posts</h5>
+			<div class="menu" wfd-id="188">
+				{% if current_user.is_authenticated %}
+				<p><a class="item" href="{{ url_for('posts.new_post') }}">Create New Post</a></p>
+				<p><a class="item" href="{{ url_for('users.user_profile',username=current_user.username) }}">View
+					My Posts</a></p>
+				{% else %}
+				<p class="item">To be confirmed...</p>
+				<p class="item">To be confirmed...</p>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="item">
+			<h5>Trending</h5>
+			<div class="menu" wfd-id="188">
+				<a href="#" class="item">Trending posts here</a>
+			</div>
+		</div>
+
+		<div class="item">
+			<h5>Most Viewed</h5>
+			<div class="menu" wfd-id="188">
+				<a href="#" class="item">Most viewed posts here</a>
+			</div>
+		</div>
+
+		<div class="item">
+			<h5>Tags</h5>
+			<div class="menu" wfd-id="188">
+				<div class="ui three column grid" wfd-id="226" id="tags-menu">
+
+					{% for tag in tags %}
+					<div class="column" wfd-id="229"><a href="#" class="ui tag label">{{ tag.name }}</a></div>
+					{% endfor %}
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock side_bar %}

@@ -6,6 +6,7 @@ from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
+from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
 from flaskblog.config import *
@@ -20,6 +21,7 @@ login_manager.login_message_category = 'info'
 mail = Mail()
 ckeditor = CKEditor()
 bootstrap = Bootstrap()
+moment = Moment()
 
 
 def create_app(config_class = DevelopmentConfig):
@@ -35,6 +37,7 @@ def create_app(config_class = DevelopmentConfig):
     mail.init_app(app)
     ckeditor.init_app(app)
     bootstrap.init_app(app)
+    moment.init_app(app)
 
     from flaskblog.users.routes import users
     from flaskblog.posts.routes import posts
