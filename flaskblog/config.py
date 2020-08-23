@@ -5,9 +5,9 @@ class Config(object):
     DEBUG = False
     TESTING = False
     SECRET_KEY = os.environ.get('SECRET_KEY')  #
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'SQLALCHEMY_DATABASE_URI')  # database location
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')  # database location
     FLASKY_COMMENTS_PER_PAGE = 3
+    FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     # for sending email for forgot password
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587

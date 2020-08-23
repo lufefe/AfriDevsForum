@@ -62,82 +62,27 @@
 	</header>
 
     <main role="main" class="container" id="main">
-	  <div class="row">
-	    <div class="col-md-8">
-	    	{% with messages = get_flashed_messages(with_categories=true) %}
-	    		{% if messages %}
-	    			{% for category, message in messages %}
-	    				<div class="alert alert-{{category}}">
-	    					{{ message }}
-	    				</div>
-	    			{% endfor %}
-	    		{% endif %}
-	    	{% endwith %}
-	      {% block content %}{% endblock %}
-	    </div>
+        <div class="ui stackable grid">
+            <div class="ten wide column">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{category}}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                {% block content %}{% endblock %}
+            </div>
 
-          {% if home %}
-          <!--Side Bar Menu-->
-          <div class="side-menu col-md-4">
-              <div class="ui vertical menu fluid" wfd-id="184">
-                  <div class="item" wfd-id="189">
-                      <form method="get" action="" class="ui action input" wfd-id="50">
-                          <input type="text" placeholder="Search..." name="query" wfd-id="222">
-                          <button class="ui icon button" wfd-id="255">
-                              <i class="search icon"></i>
-                          </button>
-                      </form>
-                  </div>
+            <!--Side Bar Menu-->
+            <div class="six wide column">
+                {% block side_bar %} {% endblock %}
 
-                  <div class="item" wfd-id="187">
-                      <h5>Posts</h5>
-                      <div class="menu" wfd-id="188">
-                          {% if current_user.is_authenticated %}
-                          <p><a class="item" href="{{ url_for('posts.new_post') }}">Create New Post</a></p>
-                          <p><a class="item" href="{{ url_for('users.user_posts',username=current_user.username) }}">View
-                              My Posts</a></p>
-                          {% else %}
-                          <p class="item">To be confirmed...</p>
-                          <p class="item">To be confirmed...</p>
-                          {% endif %}
-                      </div>
-                  </div>
-
-                  <div class="item">
-                      <h5>Trending</h5>
-                      <div class="menu" wfd-id="188">
-                          <a href="#" class="item">Trending posts here</a>
-                      </div>
-                  </div>
-
-                  <div class="item">
-                      <h5>Most Viewed</h5>
-                      <div class="menu" wfd-id="188">
-                          <a href="#" class="item">Most viewed posts here</a>
-                      </div>
-                  </div>
-
-                  <div class="item">
-                      <h5>Tags</h5>
-                      <div class="menu" wfd-id="188">
-                          <div class="ui three column grid" wfd-id="226" id="tags-menu">
-
-                              {% for tag in tags %}
-                              <div class="column" wfd-id="229"><a href="#" class="ui tag label">{{ tag.name }}</a></div>
-                              {% endfor %}
-
-                          </div>
-
-                      </div>
-                  </div>
-
-
-              </div>
-          </div>
-          {% endif %}
-
-	  </div>
-	</main>
+            </div>
+        </div>
+    </main>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

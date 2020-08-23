@@ -35,37 +35,53 @@
 							{{ form.email(class='form-control form-control-lg is-invalid') }}
 							<div class="invalid-feedback">
 								{% for error in form.email.errors %}
-									<span>{{ error }}</span>
+								<span>{{ error }}</span>
 								{% endfor %}
 							</div>
 						{% else %}
-							{{ form.email(class='form-control form-control-lg') }}
+						{{ form.email(class='form-control form-control-lg') }}
 						{% endif %}
 
 					</div>
 
-						<div class="form-group">
+					<div class="form-group">
 						{{ form.country.label(class='form-control-label') }}
 
 						{% if form.country.errors %}
-							{{ form.country(class='form-control form-control-lg is-invalid') }}
-							<div class="invalid-feedback">
-								{% for error in form.country.errors %}
-									<span>{{ error }}</span>
-								{% endfor %}
-							</div>
+						{{ form.country(class='form-control form-control-lg is-invalid') }}
+						<div class="invalid-feedback">
+							{% for error in form.country.errors %}
+							<span>{{ error }}</span>
+							{% endfor %}
+						</div>
 						{% else %}
-							{{ form.country(class='form-control form-control-lg') }}
+						{{ form.country(class='form-control form-control-lg') }}
 						{% endif %}
+					</div>
+
+					<div class="form-group">
+						{{ form.about_me.label(class='form-control-label') }}
+
+						{% if form.about_me.errors %}
+						{{ form.about_me(class='form-control form-control-lg is-invalid') }}
+						<div class="invalid-feedback">
+							{% for error in form.about_me.errors %}
+							<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+						{% else %}
+						{{ form.about_me(class='form-control form-control-lg') }}
+						{% endif %}
+
 					</div>
 
 					<div class="form-group">
 						{{ form.picture.label() }}
 						{{ form.picture(class="form-control-file") }}
 						{% if form.picture.errors %}
-							{% for error in form.picture.errors %}
-								<span class="text-danger">{{ error }}</span><br/>
-							{% endfor %}
+						{% for error in form.picture.errors %}
+						<span class="text-danger">{{ error }}</span><br/>
+						{% endfor %}
 						{% endif %}
 					</div>
 
