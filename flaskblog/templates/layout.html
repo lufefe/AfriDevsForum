@@ -51,12 +51,19 @@
                     <!--<li><a class="nav-link" href="{{ url_for('main.home') }}">Home</a></li>-->
 
                     {% if current_user.is_authenticated %}
-                    <li><a class="nav-link"  href="{{ url_for('posts.new_post') }}">New Post</a></li>
+                    <li><a class="nav-link" href="{{ url_for('posts.new_post') }}">New Post</a></li>
                     <li><a class="nav-link" href="{{ url_for('users.account') }}">Profile</a></li>
                     <li><a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a></li>
                     {% else %}
                     <li><a class="nav-link" href="{{ url_for('users.login') }}">Login</a></li>
                     <li><a class="nav-link" href="{{ url_for('users.register') }}">Register</a></li>
+                    {% endif %}
+
+                    {% if current_user.can(Permission.MODERATE_COMMENTS) %}
+                    {% if current_user.is_authenticated %}
+                    <li><a class="nav-link" href="{{ url_for('main.moderate') }}">Moderate Comments</a></li>
+                    <li><a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a></li>
+                    {% endif %}
                     {% endif %}
 
                 </ul>
@@ -76,12 +83,12 @@
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-                {% block content %}{% endblock %}
+                {% block content %}{% endblock content %}
             </div>
 
             <!--Side Bar Menu-->
             <div class="six wide column">
-                {% block side_bar %} {% endblock %}
+                {% block side_bar %} {% endblock side_bar %}
 
             </div>
         </div>

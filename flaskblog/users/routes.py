@@ -22,7 +22,7 @@ except ValueError:
 
 @users.before_app_request
 def before_request():
-    # user = User.query.get(3)
+    # user = Comment.query.get(2)
     # db.session.delete(user)
     # db.session.commit()
     if current_user.is_authenticated:
