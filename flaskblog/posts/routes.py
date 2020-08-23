@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import exc
 
 from flaskblog import db
-from flaskblog.models import Post, Tag, Comment
+from flaskblog.models import Post, Tag, Comment, Permission
 from flaskblog.posts import posts
 from flaskblog.posts.forms import PostForm, CommentForm
 
@@ -15,9 +15,10 @@ from flaskblog.posts.forms import PostForm, CommentForm
 def new_post():
     form = PostForm()
 
-    if form.validate_on_submit():
+    if current_user.can(Permission.WRITE_ARTICLES) and form.validate_on_submit():
         cleaned_content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
-        create_post = Post(title = form.title.data, content = cleaned_content, author = current_user)
+        create_post = Post(title = form.title.data, content = cleaned_content,
+                           author = current_user._get_current_object())
 
         for i in form.tags.data:
             tags = Tag(name = i)  # adds tag to TAG db Table
@@ -31,12 +32,11 @@ def new_post():
                            form = form, legend = 'New Post')
 
 
-# for viewing a selected post
-@posts.route("/post/<int:post_id>")  # passing variable post_id to the url - post_id is an Integer
+# for viewing a selected post and comments
+@posts.route("/post/<int:post_id>", methods = ['GET', 'POST'])
 def post(post_id):
-    # get_or_404 method gets the post with the post_id and if it doesn't exist it returns a 404 error (
+    # get_or_404() method gets the post with the post_id and if it doesn't exist it returns a 404 error (
     # page doesn't exist)
-
     view_post = Post.query.get_or_404(post_id)
     form = CommentForm()
 
@@ -44,12 +44,13 @@ def post(post_id):
         comment = Comment(body = form.body.data, post = view_post,
                           author = current_user._get_current_object())  # current_user._get_current_object()
         db.session.add(comment)
+        db.session.commit()
         flash('Your comment has been added', 'success')
         return redirect(url_for('.post', post_id = view_post.id, page = -1))
 
     page = request.args.get('page', 1, type = int)
     if page == -1:
-        page = (view_post.comments.count() - 1) / current_app.config['FLASKY_COMMENTS_PER_PAGE'] + 1
+        page = (view_post.comments.count() - 1) // current_app.config['FLASKY_COMMENTS_PER_PAGE'] + 1
 
     pagination = view_post.comments.order_by(Comment.timestamp.asc()).paginate(page, per_page = current_app.config[
         'FLASKY_COMMENTS_PER_PAGE'], error_out = False)
@@ -64,7 +65,7 @@ def post(post_id):
 def update_post(post_id):
     post_update = Post.query.get_or_404(post_id)
 
-    if post_update.author != current_user:
+    if post_update.author != current_user and not current_user.can(Permission.ADMINISTRATOR):
         abort(403)  # abort function is for showing the passed error page (error 403 - forbidden page)
     form = PostForm()
     if form.validate_on_submit():

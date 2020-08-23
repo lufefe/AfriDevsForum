@@ -29,7 +29,10 @@
     <title>ADF - {{ title }}</title>
 	{% else %}
     <title>ADF</title>
-	{% endif %}
+    {% endif %}
+
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
 </head>
 
 <body>
@@ -49,7 +52,7 @@
 
                     {% if current_user.is_authenticated %}
                     <li><a class="nav-link"  href="{{ url_for('posts.new_post') }}">New Post</a></li>
-                    <li><a class="nav-link" href="{{ url_for('users.account') }}">Account</a></li>
+                    <li><a class="nav-link" href="{{ url_for('users.account') }}">Profile</a></li>
                     <li><a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a></li>
                     {% else %}
                     <li><a class="nav-link" href="{{ url_for('users.login') }}">Login</a></li>
