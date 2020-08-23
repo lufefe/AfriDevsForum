@@ -5,6 +5,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import exc
 
 from flaskblog import db
+from flaskblog.decorators import permission_required
 from flaskblog.models import Post, Tag, Comment, Permission
 from flaskblog.posts import posts
 from flaskblog.posts.forms import PostForm, CommentForm
@@ -104,3 +105,40 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('main.home'))
+
+
+@posts.route('/moderate')
+@login_required
+@permission_required(Permission.MODERATE_COMMENTS)
+def moderate():
+    page = request.args.get('page', 1, type = int)
+    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(
+        page, per_page = current_app.config['FLASKY_COMMENTS_PER_PAGE'],
+        error_out = False)
+    comments = pagination.items
+    return render_template('moderate_comments.html', comments = comments,
+                           pagination = pagination, page = page)
+
+
+@posts.route('/moderate/enable/<int:id>')
+@login_required
+@permission_required(Permission.MODERATE_COMMENTS)
+def moderate_enable(id):
+    comment = Comment.query.get_or_404(id)
+    comment.disabled = False
+    # db.session.add(comment)
+    db.session.commit()
+    return redirect(url_for('.moderate_comments',
+                            page = request.args.get('page', 1, type = int)))
+
+
+@posts.route('/moderate/disable/<int:id>')
+@login_required
+@permission_required(Permission.MODERATE_COMMENTS)
+def moderate_disable(id):
+    comment = Comment.query.get_or_404(id)
+    comment.disabled = True
+    # db.session.add(comment)
+    db.session.commit()
+    return redirect(url_for('.moderate_comments',
+                            page = request.args.get('page', 1, type = int)))
