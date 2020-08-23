@@ -7,10 +7,12 @@
 		 src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
 	<div class="media-body">
 		<div class="article-metadata">
+<!--			TODO ***** if user is current_user replace link with edit_profile link -->
 			<a class="mr-2" id="username" href="{{ url_for('users.user_profile', username=post.author.username) }}">{{
 				post.author.username }}</a>
 			<!-- displays date in Y-m-d format-->
 			<small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+			<!--			<small class="text-muted">{{ moment(post.date_posted).fromNow() }}</small>-->
 		</div>
 		<!-- anchor tag goes to post route and passes post_id as an argument (passing the id of the selected post) -->
 		<h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
