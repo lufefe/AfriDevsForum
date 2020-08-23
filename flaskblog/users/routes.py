@@ -1,7 +1,7 @@
 import json
 
 import requests
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import render_template, url_for, flash, redirect, request, abort, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 
 from flaskblog import db, bcrypt
@@ -85,14 +85,14 @@ def logout():
     return redirect(url_for('main.home'))
 
 
-@users.route("/user_profile/<string:username>")
+@users.route("/user-profile/<string:username>")
 def user_profile(username):
     page = request.args.get('page', 1, type = int)
     user = User.query.filter_by(username = username).first_or_404()
     image_file = url_for('static', filename = 'profile_pics/' + user.image_file)
     posts = Post.query.filter_by(author = user) \
         .order_by(Post.date_posted.desc()) \
-        .paginate(page = page, per_page = 5)
+        .paginate(page = page, per_page = current_app.config['FLASKY_POSTS_PER_PAGE'])
     if user and posts is None:
         abort(404)
     return render_template('user_profile.html', user = user, image_file = image_file, posts = posts)
