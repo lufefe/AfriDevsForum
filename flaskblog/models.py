@@ -139,6 +139,7 @@ post_tag = db.Table('post_tag',
 
 
 class Post(db.Model):
+    __searchable__ = ['title', 'content']
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(100), nullable = False)
     date_posted = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
@@ -186,4 +187,3 @@ class Comment(db.Model):
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
-

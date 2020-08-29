@@ -1,16 +1,17 @@
 import json
 
 import requests
-from flask import render_template, url_for, flash, redirect, request, abort, current_app
+from flask import render_template, url_for, flash, redirect, request, abort, current_app, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 
 from flaskblog import db, bcrypt
 from flaskblog.decorators import admin_required
 from flaskblog.models import User, Post, Role
-from flaskblog.users import users
 from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm, EditProfileAdminForm)
 from flaskblog.users.utils import save_picture, send_reset_email, send_confirmation_email
+
+users = Blueprint('users', __name__)
 
 try:
     r = requests.get('https://restcountries.eu/rest/v2/region/africa')
