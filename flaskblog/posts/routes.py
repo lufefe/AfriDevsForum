@@ -1,14 +1,15 @@
 import bleach  # secure against script injection by stripping html tags
 from flask import (render_template, url_for, flash,
-                   redirect, request, abort, current_app)
+                   redirect, request, abort, current_app, Blueprint)
 from flask_login import current_user, login_required
 from sqlalchemy import exc
 
 from flaskblog import db
 from flaskblog.decorators import permission_required
 from flaskblog.models import Post, Tag, Comment, Permission
-from flaskblog.posts import posts
 from flaskblog.posts.forms import PostForm, CommentForm
+
+posts = Blueprint('posts', __name__)
 
 
 @posts.route("/post/new", methods = ['GET', 'POST'])
@@ -142,3 +143,4 @@ def moderate_disable(id):
     db.session.commit()
     return redirect(url_for('.moderate_comments',
                             page = request.args.get('page', 1, type = int)))
+
