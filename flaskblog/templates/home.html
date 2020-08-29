@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% block content %}
-{% if posts is defined %} <!-- checks if there are posts -->
+
 {% for post in posts.items %}
 <article class="media content-section">
 	<img class="rounded-circle article-img"
@@ -41,68 +41,74 @@
 {% endif %}
 {% endfor %}
 
-{% else %} <!-- if there are no posts -->
-<h2 class="ui center aligned icon header">
-	<i class=" edit icon"></i>
-	No Posts Yet
-</h2>
-{%endif %}
 {% endblock content %}
 
 {% block side_bar %}
 <div class="side-menu">
 	<div class="ui vertical menu fluid" wfd-id="184">
 		<div class="item" wfd-id="189">
-			<form method="get" action="" class="ui action input" wfd-id="50">
-				<input type="text" placeholder="Search..." name="query" wfd-id="222">
-				<button class="ui icon button" wfd-id="255">
-					<i class="search icon"></i>
-				</button>
+			<form class="ui form" action="{{ url_for('main.search') }}" method="post">
+				<div class="ui action input" wfd-id="52">
+					<input type="text" placeholder="Search..." wfd-id="192" name="query">
+					<button type="submit" class="ui icon button" wfd-id="224">
+						<i class="search icon"></i>
+					</button>
+
+				</div>
 			</form>
 		</div>
 
 		<div class="item" wfd-id="187">
-			<h5>Posts</h5>
+			{% if current_user.is_authenticated %}
+			<h5 class="ui header">Posts</h5>
 			<div class="menu" wfd-id="188">
-				{% if current_user.is_authenticated %}
 				<p><a class="item" href="{{ url_for('posts.new_post') }}">Create New Post</a></p>
-				<p><a class="item" href="{{ url_for('users.user_profile',username=current_user.username) }}">View
-					My Posts</a></p>
+				<p><a class="item" href="{{ url_for('users.user_profile',username=current_user.username) }}">View My
+					Posts</a></p>
 				{% else %}
-				<p class="item">To be confirmed...</p>
-				<p class="item">To be confirmed...</p>
-				{% endif %}
+				<h5 class="ui header">Site stats</h5>
+				<div class="menu" wfd-id="188">
+					<div class="ui two statistics" wfd-id="73">
+						<div class="statistic" wfd-id="83">
+							<div class="value" wfd-id="85">{{user_count}}</div>
+							<div class="label" wfd-id="84">Members</div>
+						</div>
+						<div class="statistic" wfd-id="77">
+							<div class="value" wfd-id="79">{{ post_count }}</div>
+							<div class="label" wfd-id="78">Posts</div>
+						</div>
+					</div>
+					{% endif %}
+				</div>
 			</div>
-		</div>
 
-		<div class="item">
-			<h5>Trending</h5>
-			<div class="menu" wfd-id="188">
-				<a href="#" class="item">Trending posts here</a>
-			</div>
-		</div>
+			<!--		<div class="item">-->
+			<!--			<h5 class="ui header">Trending</h5>-->
+			<!--			<div class="menu" wfd-id="188">-->
+			<!--				<a href="#" class="item">Trending posts here</a>-->
+			<!--			</div>-->
+			<!--		</div>-->
 
-		<div class="item">
-			<h5>Most Viewed</h5>
-			<div class="menu" wfd-id="188">
-				<a href="#" class="item">Most viewed posts here</a>
-			</div>
-		</div>
+			<!--		<div class="item">-->
+			<!--			<h5 class="ui header">Most Viewed</h5>-->
+			<!--			<div class="menu" wfd-id="188">-->
+			<!--				<a href="#" class="item">Most viewed posts here</a>-->
+			<!--			</div>-->
+			<!--		</div>-->
 
-		<div class="item">
-			<h5>Tags</h5>
-			<div class="menu" wfd-id="188">
-				<div class="ui three column grid" wfd-id="226" id="tags-menu">
+			<div class="item">
+				<h5 class="ui header">Tags</h5>
+				<div class="menu" wfd-id="188">
+					<div class="ui three column grid" wfd-id="226" id="tags-menu">
+						{% for tag in tags %}
+						<div class="column" wfd-id="229"><a href="#" class="ui tag label">{{ tag.name }}</a></div>
+						{% endfor %}
 
-					{% for tag in tags %}
-					<div class="column" wfd-id="229"><a href="#" class="ui tag label">{{ tag.name }}</a></div>
-					{% endfor %}
+					</div>
 
 				</div>
-
 			</div>
 		</div>
-
 	</div>
 </div>
 {% endblock side_bar %}

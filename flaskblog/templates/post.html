@@ -44,6 +44,7 @@
 
 <!--Comments-->
 <div class="ui comments" wfd-id="196">
+	{% if current_user.is_authenticated %}
 	<form class="ui reply form" method="POST" action="" enctype="multipart/form-data">
 		{{ form.hidden_tag() }}
 		<div class="ui field" wfd-id="152">
@@ -56,6 +57,7 @@
 			{{form.submit(class='btn btn-info')}}
 		</div>
 	</form>
+	{% endif %}
 	{% if post.comments.count() > 0 %}
 	<h3 class="ui dividing header">Comments</h3>
 
