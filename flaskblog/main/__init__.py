@@ -1,8 +1,5 @@
-from flask import Blueprint
-
+from flaskblog.main.routes import main
 from flaskblog.models import Permission
-
-main = Blueprint('main', __name__)
 
 
 @main.app_context_processor

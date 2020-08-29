@@ -1,4 +1,3 @@
-# import flask
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
@@ -12,23 +11,23 @@ from flask_sqlalchemy import SQLAlchemy
 from flaskblog.config import *
 
 db = SQLAlchemy()  # new instance of a database
-migrate = Migrate()
+migrate = Migrate()  # migrate tracks db changes just like git
 bcrypt = Bcrypt()  # new instance of bcrypt encryption for password on register
 login_manager = LoginManager()  # new instance of LoginManager lib for handling user login sessions
 login_manager.session_protection = 'strong'
-login_manager.login_view = 'users.login'  # telling the extension where the login view is (login function in users/routes.py)
+login_manager.login_view = 'users.login'  # telling the extension where the login view is
 login_manager.login_message_category = 'info'
 mail = Mail()
 ckeditor = CKEditor()
 bootstrap = Bootstrap()
-moment = Moment()
+moment = Moment()  # for formatting dates
 
 
 def create_app(config_class = DevelopmentConfig):
     app = Flask(__name__)
     app.config.from_object(config_class)
-
-    app.config.get('WHOOSH_BASE')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    app.config['WHOOSH_BASE'] = 'flaskblog/whoosh'
 
     db.init_app(app)
     migrate.init_app(app, db)

@@ -9,6 +9,7 @@ class Config(object):
     FLASKY_COMMENTS_PER_PAGE = 3
     FLASKY_POSTS_PER_PAGE = 7
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
+    MAX_SEARCH_RESULTS = 50
     # for sending email for forgot password
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
