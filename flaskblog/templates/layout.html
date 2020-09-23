@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
- 	<!-- Required meta tags -->
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!--My CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main2.css') }}">
 
     <!--UIKit CSS-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit.min.css') }}"/>
@@ -14,6 +16,7 @@
     <!--Semantic-UI-->
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+
     <!--Node.js <NPM>-->
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
 
@@ -41,8 +44,8 @@
         <nav class="navbar fixed-top">
             <div class="container">
                 <div class="brand">
-                    <a href="{{ url_for('main.home') }}"><img src="/static/site_pics/site_logo_1_trans.png" width="55"
-                                                              height="55"></a>
+                    <a href="{{ url_for('main.home') }}"><img src="/static/site_pics/site_logo_1_trans.png"
+                                                              id="brand-logo" width="55" height="55"></a>
                     <!--                    <a href="{{ url_for('main.home') }}">African Developers Forum</a>-->
                 </div>
                 <div class="toggle">
@@ -139,8 +142,9 @@
                     <ul class="uk-list uk-list-divider">
                         <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.home') }}">Home</a></li>
                         <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.about') }}">About</a></li>
-                        <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.home') }}">Products</a></li>
-                        <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.home') }}">Contact Us</a></li>
+                        <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.home') }}">Advertising</a></li>
+                        <li><i class="ion-ios-arrow-right"></i><a href="{{ url_for('main.contact') }}">Contact Us</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6 footer-contact">
