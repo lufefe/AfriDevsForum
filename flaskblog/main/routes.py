@@ -36,6 +36,11 @@ def about():
     return render_template('about.html', title = 'About')
 
 
+@main.route("/contact")
+def contact():
+    return render_template('contactus.html', title = 'Contact Us')
+
+
 @main.route('/search_results/<query>')
 # @login_required
 def search_results(query):
@@ -54,3 +59,8 @@ def search():
     if not query:
         return redirect(url_for('main.home'))
     return redirect(url_for('main.search_results', query = query))
+
+#
+# @main.route("/")
+# def maintenance():
+#     return render_template('under_maintenance.html')
