@@ -4,6 +4,7 @@ from flask_login import current_user
 from sqlalchemy import or_
 
 from flaskblog import db
+from flaskblog.decorators import admin_required
 from flaskblog.models import Post, Tag, User
 from flaskblog.posts.forms import SearchForm
 
@@ -39,6 +40,12 @@ def about():
 @main.route("/contact")
 def contact():
     return render_template('contactus.html', title = 'Contact Us')
+
+
+@main.route("/admin")
+@admin_required
+def admin():
+    pass
 
 
 @main.route('/search_results/<query>')

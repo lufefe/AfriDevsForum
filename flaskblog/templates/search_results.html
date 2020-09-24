@@ -22,7 +22,7 @@
         <p class="article-content">{{ post.content | truncate(400)| safe}}</p> <!-- safe filter is for HTML escaping-->
         <a class="btn btn-outline-info mb-4" href="{{ url_for('posts.post', post_id=post.id) }}">Read more </a>
         {% else %}
-        <p class="article-content">{{ post.content}}</p>
+        <p class="article-content">{{ post.content|safe}}</p>
         {% endif %}
 
     </div>

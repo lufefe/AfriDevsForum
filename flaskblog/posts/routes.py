@@ -5,13 +5,14 @@ from flask_login import current_user, login_required
 from sqlalchemy import exc
 
 from flaskblog import db
-from flaskblog.decorators import permission_required
+from flaskblog.decorators import permission_required, moderator_required
 from flaskblog.models import Post, Tag, Comment, Permission
 from flaskblog.posts.forms import PostForm, CommentForm
 
 posts = Blueprint('posts', __name__)
 
 
+@permission_required(Permission.WRITE_ARTICLES)
 @posts.route("/post/new", methods = ['GET', 'POST'])
 @login_required
 def new_post():
@@ -30,6 +31,8 @@ def new_post():
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.home'))
+    else:
+        flash('Your don\'t have the permission to create a post! Contact administrator.', 'warning')
     return render_template('create_post.html', title = 'New Post',
                            form = form, legend = 'New Post')
 
@@ -110,15 +113,16 @@ def delete_post(post_id):
 
 @posts.route('/moderate')
 @login_required
-@permission_required(Permission.MODERATE_COMMENTS)
+@moderator_required
 def moderate():
+    form = CommentForm()
     page = request.args.get('page', 1, type = int)
-    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(
-        page, per_page = current_app.config['FLASKY_COMMENTS_PER_PAGE'],
-        error_out = False)
+    pagination = Comment.query.order_by(Comment.timestamp.asc()).paginate(page, per_page = current_app.config[
+        'FLASKY_COMMENTS_PER_PAGE'], error_out = False)
     comments = pagination.items
+    print(comments)
     return render_template('moderate_comments.html', comments = comments,
-                           pagination = pagination, page = page)
+                           pagination = pagination, page = page, form = form)
 
 
 @posts.route('/moderate/enable/<int:id>')
@@ -129,7 +133,7 @@ def moderate_enable(id):
     comment.disabled = False
     # db.session.add(comment)
     db.session.commit()
-    return redirect(url_for('.moderate_comments',
+    return redirect(url_for('.moderate',
                             page = request.args.get('page', 1, type = int)))
 
 
@@ -141,6 +145,5 @@ def moderate_disable(id):
     comment.disabled = True
     # db.session.add(comment)
     db.session.commit()
-    return redirect(url_for('.moderate_comments',
+    return redirect(url_for('.moderate',
                             page = request.args.get('page', 1, type = int)))
-

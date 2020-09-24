@@ -3,12 +3,14 @@ from datetime import datetime
 
 import bleach
 from flask import current_app
+from flask_admin.contrib.sqla import ModelView
 # UserMixin is a class that we inherit from the required methods & attributes used in managing login sessions
 from flask_login import UserMixin, AnonymousUserMixin
 # Serializer will be used for generating tokens for 'Forgot Password'
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from markdown import markdown
 
+from flaskblog import admin
 from flaskblog import db, login_manager
 
 
@@ -185,5 +187,14 @@ class Comment(db.Model):
         target.body_html = bleach.linkify(bleach.clean(markdown(value, output_format = 'html'),
                                                        tags = allowed_tags, strip = True))
 
+    def __repr__(self):
+        return f"Comment('{self.body}', '{self.timestamp}')"
+
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
+
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Post, db.session))
+admin.add_view(ModelView(Tag, db.session))
+admin.add_view(ModelView(Comment, db.session))
+admin.add_view(ModelView(Role, db.session))

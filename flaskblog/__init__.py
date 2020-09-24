@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_admin import Admin
 from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
@@ -21,6 +22,7 @@ mail = Mail()
 ckeditor = CKEditor()
 bootstrap = Bootstrap()
 moment = Moment()  # for formatting dates
+admin = Admin(name = 'Afri Devs Forum', template_mode = 'bootstrap3')
 
 
 def create_app(config_class = DevelopmentConfig):
@@ -29,6 +31,7 @@ def create_app(config_class = DevelopmentConfig):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     app.config['WHOOSH_BASE'] = 'flaskblog/whoosh'
 
+    admin.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)

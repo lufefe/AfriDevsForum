@@ -183,6 +183,9 @@ a.article-title:hover {
     color:#ffffff;
     border-color: #4B0082;
 }
+.side-menu .item .input {
+    width: 90%;
+}
 
 .side-menu .item .menu #tags-menu
 {
@@ -347,6 +350,10 @@ a.article-title:hover {
   .nav-link:hover {
     border-bottom:  2px solid #4B0082;
   }
+
+  #footer .page-footer .container .row .uk-inline button{
+        vertical-align: top;
+    }
 }
 
 /* // Small devices (landscape phones, 576px and up) */
@@ -378,33 +385,54 @@ a.article-title:hover {
   .nav-link:hover {
     border-bottom:  2px solid #4B0082;
   }
+
+   #footer .page-footer .container .row .uk-inline button{
+        vertical-align: top;
+    }
 }
 
 /* // Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px) { 
 
+    .side-menu .item .input {
+        width: 85%;
+    }
 
+    .side-menu .item .menu #tags-menu
+    {
+        flex-flow: column;
+        position: relative;
+        align-items: center;
+    }
+    .side-menu .item .menu #tags-menu .column
+    {
+        padding: 4px;
+    }
 
- }
+    #footer .page-footer .container .row .uk-inline button{
+        vertical-align: top;
+    }
+
+}
 
 /* // Large devices (desktops, 992px and up) */
 @media (min-width: 992px) and (max-width: 1199.98px) {  
 
-.site-header .fixed-top.container .nav a.nav-link {
-    border-top: 4px solid rgb(242, 240, 243);
-    transition: border-top .3s;
-  }
-.site-header .fixed-top .container .nav a.nav-link:hover {
-    border-top: 4px solid #4B0082;
-  }
+    .site-header .fixed-top.container .nav a.nav-link {
+        border-top: 4px solid rgb(242, 240, 243);
+        transition: border-top .3s;
+      }
+    .site-header .fixed-top .container .nav a.nav-link:hover {
+        border-top: 4px solid #4B0082;
+      }
 
-.site-header .fixed-top.scrolled .container .nav a.nav-link {
-    border-top: 4px solid #212529;
-    transition: border-top .3s;
-  }
-.site-header .fixed-top.scrolled .container .nav a.nav-link:hover {
-    border-top: 4px solid #FFA500;
-  }
+    .site-header .fixed-top.scrolled .container .nav a.nav-link {
+        border-top: 4px solid #212529;
+        transition: border-top .3s;
+      }
+    .site-header .fixed-top.scrolled .container .nav a.nav-link:hover {
+        border-top: 4px solid #FFA500;
+      }
 
 }
 
