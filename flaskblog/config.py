@@ -6,7 +6,7 @@ class Config(object):
     TESTING = False
     SECRET_KEY = os.environ.get('SECRET_KEY')  #
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')  # database location
-    FLASKY_COMMENTS_PER_PAGE = 3
+    FLASKY_COMMENTS_PER_PAGE = 4
     FLASKY_POSTS_PER_PAGE = 7
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     MAX_SEARCH_RESULTS = 50
@@ -32,3 +32,12 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+
+
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+
+    'default': DevelopmentConfig
+}
