@@ -3,14 +3,15 @@ from datetime import datetime
 
 import bleach
 from flask import current_app
+from flask_admin import expose, AdminIndexView, Admin
 from flask_admin.contrib.sqla import ModelView
 # UserMixin is a class that we inherit from the required methods & attributes used in managing login sessions
 from flask_login import UserMixin, AnonymousUserMixin
+from flask_login import current_user
 # Serializer will be used for generating tokens for 'Forgot Password'
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from markdown import markdown
 
-from flaskblog import admin
 from flaskblog import db, login_manager
 
 
@@ -192,6 +193,19 @@ class Comment(db.Model):
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
+
+
+# Admin site setup
+class MyAdminHome(AdminIndexView):
+    @expose('/')
+    def index(self):
+        if current_user.is_authenticated and current_user.can(Permission.ADMINISTRATOR):
+            return self.render('admin/index.html')
+        else:
+            return self.render('errors/403.html')
+
+
+admin = Admin(app = current_app, name = 'Afri Devs Forum', template_mode = 'bootstrap3', index_view = MyAdminHome())
 
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Post, db.session))
