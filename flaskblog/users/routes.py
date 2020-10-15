@@ -43,6 +43,8 @@ def unconfirmed():
 
 @users.route("/register", methods = ['GET', 'POST'])
 def register():
+    user_count = db.session.query(User).count()
+
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
 
@@ -60,7 +62,7 @@ def register():
         # flash('Your account has been created! You are now able to log in',
         #     'success')  # messages that pop up, 'success' is used for bootstrap
         return redirect(url_for('users.login'))
-    return render_template('register.html', title = 'Register', form = form)
+    return render_template('register.html', title = 'Register', form = form, user_count = user_count)
 
 
 @users.route("/login", methods = ['GET', 'POST'])

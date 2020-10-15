@@ -25,3 +25,7 @@ def admin_required(f):
 
 def moderator_required(f):
     return permission_required(Permission.MODERATE_COMMENTS)(f)
+
+
+def user_required(f):
+    return permission_required(Permission.WRITE_ARTICLES)

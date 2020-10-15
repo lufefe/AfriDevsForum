@@ -162,7 +162,7 @@ def slugify_tag(s):
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64))
-    slug = db.Column(db.String(64), unique = True)
+    slug = db.Column(db.String(64), unique = False)
 
     def __init__(self, *args, **kwargs):
         super(Tag, self).__init__(*args, **kwargs)

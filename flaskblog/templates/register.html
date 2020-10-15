@@ -83,14 +83,26 @@
 				</div>
 			</form>
 			<div class="border-top pt-3">
-			<small class="text-muted">
-				Already Have An Account ? <a href="{{ url_for('users.login') }}" class="ml-2">Sign In</a>
-			</small>
+				<small class="text-muted">
+					Already Have An Account ? <a href="{{ url_for('users.login') }}" class="ml-2">Sign In</a>
+				</small>
 			</div>
 		</div>
 
 
-	{% endblock content %}
+{% endblock content %}
 
+{% block side_bar %}
+
+<div class="ui large right floated statistic" wfd-id="176">
+	<div class="text value" wfd-id="177">
+		You will be user number &nbsp;
+	</div>
+	<div class="value" wfd-id="81">
+		{{user_count + 1}}
+	</div>
+</div>
+
+{% endblock side_bar %}
 
 
