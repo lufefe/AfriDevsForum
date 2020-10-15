@@ -17,22 +17,21 @@ posts = Blueprint('posts', __name__)
 @login_required
 def new_post():
     form = PostForm()
-
-    if current_user.can(Permission.WRITE_ARTICLES) and form.validate_on_submit():
-        cleaned_content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
+    if form.validate_on_submit():
+        cleaned_content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's', 'pre'])
         create_post = Post(title = form.title.data, content = cleaned_content,
                            author = current_user._get_current_object())
 
-        for i in form.tags.data:
-            tags = Tag(name = i)  # adds tag to TAG db Table
-            create_post.tag.append(tags)  # adds tag to post_tag table with post id.
+        if form.tags.data[0]:
+            for i in form.tags.data:
+                tags = Tag(name = i)  # adds tag to TAG db Table
+                create_post.tag.append(tags)  # adds tag to post_tag table with post id.
 
         db.session.add(create_post)
         db.session.commit()
+
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.home'))
-    else:
-        flash('Your don\'t have the permission to create a post! Contact administrator.', 'warning')
     return render_template('create_post.html', title = 'New Post',
                            form = form, legend = 'New Post')
 

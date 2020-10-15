@@ -162,12 +162,12 @@ a.article-title:hover {
 }
 
 #main .content-section .media-body .btn-outline-info{
-    color: #5d07ad;
-    border-color: #5d07ad;
+    color:  #4B0082;
+    border-color:  #4B0082;
 }
 
 #main .content-section .media-body .btn-outline-info:hover{
-    background-color: #4B0082;
+    background-color:  #4B0082;
     color:#ffffff;
 
 }
@@ -183,6 +183,18 @@ a.article-title:hover {
     color:#ffffff;
     border-color: #4B0082;
 }
+
+#main .btn-outline-info{
+    color: #4B0082;;
+    border-color: #4B0082;
+}
+
+#main .btn-outline-info:hover{
+    background-color: #4B0082;
+    color:#ffffff;
+    border-color: #4B0082;
+}
+
 .side-menu .item .input {
     width: 90%;
 }
@@ -278,8 +290,11 @@ a.article-title:hover {
 #footer{
   background-color: #212529;
   color: #9e9e9e;
-  top:180px;
   position: relative;
+  margin-top: 20px;
+  clear: both;
+  width: 100%;
+  bottom:0;
 }
 
 .page-footer{
