@@ -1,39 +1,114 @@
 {% extends 'layout.html' %}
-	{% block content %}
+{% block content %}
 
-		{% for post in posts.items %}
-		<article class="media content-section">
-			<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-		  <div class="media-body">
-		    <div class="article-metadata">
-		      <a class="mr-2" id="username" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-		       <!-- displays date in Y-m-d format-->
-		      <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small> 
-		    </div>
-		    <!-- anchor tag goes to post route and passes post_id as an argument (passing the id of the selected post) -->
-		    <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
-			  {% if post.content|length > 400 %}
-		    	<p class="article-content">{{ post.content | truncate(400)| safe}}</p> <!-- safe filter is for HTML escaping-->
-			  <a class="btn btn-outline-info mb-4" href="{{ url_for('posts.post', post_id=post.id) }}">Read more </a>
-			  {% else %}
-			  	<p class="article-content">{{ post.content | safe}}</p>
-			  {% endif %}
-		  </div>
-		</article>
-		{% endfor %}
+{% for post in posts.items %}
+<article class="media content-section">
+	<img class="rounded-circle article-img"
+		 src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+	<div class="media-body">
+		<div class="article-metadata">
+			<!--			TODO ***** if user is current_user replace link with edit_profile link -->
+			<a class="mr-2" id="username" href="{{ url_for('users.user_profile', username=post.author.username) }}">{{
+				post.author.username }}</a>
+			<!-- displays date in Y-m-d format-->
+			<small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+			<!--			<small class="text-muted">{{ moment(post.date_posted).fromNow() }}</small>-->
+		</div>
+		<!-- anchor tag goes to post route and passes post_id as an argument (passing the id of the selected post) -->
+		<h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+		{% if post.content|length > 400 %}
+		<p class="article-content">{{ post.content | truncate(400)| safe}}</p> <!-- safe filter is for HTML escaping-->
+		<a class="btn btn-outline-info mb-4" href="{{ url_for('posts.post', post_id=post.id) }}">Read more </a>
+		{% else %}
+		<p class="article-content">{{ post.content|safe}}</p>
+		{% endif %}
+
+	</div>
+
+</article>
+{% endfor %}
 
 <!-- For showing the page number links at the bottom of the posts -->
-		{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-			{% if page_num %}
-				{% if posts.page == page_num %}
-				<a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+{% if page_num %}
+{% if posts.page == page_num %}
+<a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+{% else %}
+<a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+{% endif %}
+{% else %}
+...
+{% endif %}
+{% endfor %}
+
+{% endblock content %}
+
+{% block side_bar %}
+<div class="side-menu">
+	<div class="ui vertical menu fluid" wfd-id="184">
+		<div class="item" wfd-id="189">
+			<form class="ui form" action="{{ url_for('main.search') }}" method="post">
+				<div class="ui action input" wfd-id="52">
+					<input type="text" placeholder="Search..." wfd-id="192" name="query">
+					<button type="submit" class="ui icon button" wfd-id="224">
+						<i class="search icon"></i>
+					</button>
+
+				</div>
+			</form>
+		</div>
+
+		<div class="item" wfd-id="187">
+			{% if current_user.is_authenticated %}
+			<h5 class="ui header">Posts</h5>
+			<div class="menu" wfd-id="188">
+				<p><a class="item" href="{{ url_for('posts.new_post') }}">Create New Post</a></p>
+				<p><a class="item" href="{{ url_for('users.user_profile',username=current_user.username) }}">View My
+					Posts</a></p>
 				{% else %}
-					<a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
-				{% endif %}
-			{% else %}
-				...
-			{% endif %}
-		{% endfor %}
+				<h5 class="ui header">Site stats</h5>
+				<div class="menu" wfd-id="188">
+					<div class="ui two statistics" wfd-id="73">
+						<div class="statistic" wfd-id="83">
+							<div class="value" wfd-id="85">{{user_count}}</div>
+							<div class="label" wfd-id="84">Members</div>
+						</div>
+						<div class="statistic" wfd-id="77">
+							<div class="value" wfd-id="79">{{ post_count }}</div>
+							<div class="label" wfd-id="78">Posts</div>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
 
-	{% endblock content %}
+			<!--		<div class="item">-->
+			<!--			<h5 class="ui header">Trending</h5>-->
+			<!--			<div class="menu" wfd-id="188">-->
+			<!--				<a href="#" class="item">Trending posts here</a>-->
+			<!--			</div>-->
+			<!--		</div>-->
 
+			<!--		<div class="item">-->
+			<!--			<h5 class="ui header">Most Viewed</h5>-->
+			<!--			<div class="menu" wfd-id="188">-->
+			<!--				<a href="#" class="item">Most viewed posts here</a>-->
+			<!--			</div>-->
+			<!--		</div>-->
+
+			<div class="item">
+				<h5 class="ui header">Tags</h5>
+				<div class="menu" wfd-id="188">
+					<div class="ui three column grid" wfd-id="226" id="tags-menu">
+						{% for tag in tags %}
+						<div class="column" wfd-id="229"><a href="#" class="ui tag label">{{ tag.name }}</a></div>
+						{% endfor %}
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock side_bar %}
