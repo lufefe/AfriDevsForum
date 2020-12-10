@@ -28,6 +28,7 @@ def home():
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page = page,
                                                                   per_page = current_app.config[
                                                                       'FLASKY_POSTS_PER_PAGE'])
+    print(user_count)
     # tags = Tag.query.distinct(Tag.name).limit(8)
     tags = db.session.query(Tag.name).distinct().limit(8)
     return render_template('home.html', posts = posts, tags = tags, user_count = user_count, post_count = post_count)

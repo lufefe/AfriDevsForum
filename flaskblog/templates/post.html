@@ -17,7 +17,9 @@
                         type="button">Delete
                 </button>
             </div>
+
             {% endif %}
+
         </div>
         <h2 class="article-title">{{ post.title }}</h2>
         <p class="article-content">{{ post.content| safe }}</p>
@@ -33,14 +35,14 @@
         </div>
 
     </div>
-
-    <div class="article-metadata">
+    <div class="article-metadata-comment">
         <a href="{{ url_for('.post', post_id=post.id) }}#comments">
 				<span class="label label-primary">
 					{{ post.comments.count() }} Comments
 				</span>
         </a>
     </div>
+
 
 </article>
 
@@ -149,5 +151,15 @@
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('.six').remove();
+    $('.ten').addClass('twelve').removeClass('ten');
+    $(".twelve").css("width", "80%");
+});
+
+
+</script>
 
 {% endblock content %}
