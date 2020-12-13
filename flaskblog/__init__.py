@@ -30,6 +30,8 @@ def create_app(config_class = DevelopmentConfig):
     app = Flask(__name__)
     with app.app_context():
         app.config.from_object(config_class)
+        app.config['SECRET_KEY'] = "b8808f5040eea05b1b539e7b3ec64caff56eaba77d57296f"
+        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///sitetest.db"
         initialize_extensions(app)
         register_blueprints(app)
         return app
