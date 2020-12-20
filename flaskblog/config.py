@@ -5,8 +5,6 @@ class Config(object):
     # Config basics
     DEBUG = False
     TESTING = False
-    SECRET_KEY = environ.get('SECRET_KEY')  #
-    SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_TEST_DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     WHOOSH_BASE = 'flaskblog/whoosh'
 
@@ -14,8 +12,6 @@ class Config(object):
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = environ.get('MAIL_USER')
-    MAIL_PASSWORD = environ.get('MAIL_PASS')
 
     # Blog parameters
     FLASKY_COMMENTS_PER_PAGE = 4
@@ -40,6 +36,10 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     DEBUG = True
     TESTING = True
+    SECRET_KEY = environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_TEST_DATABASE_URI')
+    MAIL_USERNAME = environ.get('MAIL_USER')
+    MAIL_PASSWORD = environ.get('MAIL_PASS')
 
 # config = {
 #     'development': DevelopmentConfig,

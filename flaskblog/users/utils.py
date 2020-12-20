@@ -3,7 +3,7 @@ import secrets
 from threading import Thread
 
 from PIL import Image  # used to resize image sizes
-from flask import url_for, current_app
+from flask import current_app, render_template
 from flask_mail import Message
 
 from flaskblog import mail
@@ -32,13 +32,10 @@ def send_reset_email(user):
     app = current_app._get_current_object()
     token = user.get_reset_token()
     msg = Message('Password Reset Request',
-                  sender = 'noreply@afridevsforum.com',
-                  recipients = [user.email])
-    msg.body = f'''To reset your password, visit the following link:
-{url_for('users.reset_token', token = token, _external = True)}
+                  sender = ('AfriDevsForum', app.config['MAIL_USERNAME']),
+                  recipients = [user.email],
+                  html = render_template('email/password_reset_email.html', user = user, token = token))
 
-If you did not make this request then simply ignore this email and no changes will be made.
-'''
     thr = Thread(target = send_async_email, args = [app, msg])
     thr.start()
 
@@ -47,13 +44,9 @@ def send_confirmation_email(user):
     app = current_app._get_current_object()
     token = user.generate_confirmation_token()
     msg = Message('Email Confirmation',
-                  sender = 'noreply@afridevsforum.com',
-                  recipients = [user.email])
-    msg.body = f'''To confirm your email, visit the following link:
-{url_for('users.confirm', token = token, _external = True)}
-
-    If you did not make this request then simply ignore this email and no changes will be made.
-    '''
+                  sender = ('AfriDevsForum', app.config['MAIL_USERNAME']),
+                  recipients = [user.email],
+                  html = render_template('email/confirm_user_email.html', user = user, token = token))
 
     thr = Thread(target = send_async_email, args = [app, msg])
     thr.start()

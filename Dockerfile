@@ -1,6 +1,7 @@
 #FROM ubuntu:20.04
+#FROM python:3:9-alpine
 FROM python:3
-#
+#RUN adduser -D adf
 #RUN apt-get update \
 #    && apt-get install python-pip
 #
@@ -17,6 +18,7 @@ WORKDIR /
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt
+#RUN pip install gunicorn
 
 COPY . .
 
