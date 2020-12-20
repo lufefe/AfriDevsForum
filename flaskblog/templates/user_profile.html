@@ -8,7 +8,7 @@
     <!-- <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">-->
     <div class="media-body">
         <div class="article-metadata">
-            <a class="mr-2" id="username" href="#">{{ post.author.username }}</a>
+            <a class="mr-2" href="#" id="username">{{ post.author.username }}</a>
             <!-- displays date in Y-m-d format-->
             <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
         </div>
@@ -41,10 +41,13 @@
 {% endblock content %}
 
 {% block side_bar %}
+<!--suppress HtmlUnknownAttribute -->
 <div class="ui centered card" wfd-id="341">
+    <!--suppress HtmlUnknownAttribute -->
     <div class="image" wfd-id="347">
         <img src="{{ image_file }}">
     </div>
+    <!--suppress HtmlUnknownAttribute -->
     <div class="content" wfd-id="343">
         <a class="header">
             {% if user.name %}
@@ -52,13 +55,17 @@
             {% else %}
             {{ user.username }}
             {% endif %}</a>
+        <!--suppress HtmlUnknownAttribute -->
         <div class="meta" wfd-id="345">
+            <!--suppress HtmlUnknownAttribute -->
             <span class="date" wfd-id="346">Member since: {{ moment(user.member_since).format('L') }}</span>
         </div>
+        <!--suppress HtmlUnknownAttribute -->
         <div class="description" wfd-id="344">
             {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
         </div>
     </div>
+    <!--suppress HtmlUnknownAttribute -->
     <div class="extra content" wfd-id="342">
         <a href="#">
             <i class="globe icon"></i>

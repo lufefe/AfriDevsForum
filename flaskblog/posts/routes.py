@@ -74,7 +74,7 @@ def update_post(post_id):
     form = PostForm()
     if form.validate_on_submit():
         post_update.title = form.title.data
-        post_update.content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's'])
+        post_update.content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's', 'pre'])
         for i in form.tags.data:
             exists = db.session.query(db.exists().where(Tag.name == i)).scalar()
             if not exists:

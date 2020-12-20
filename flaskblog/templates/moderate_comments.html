@@ -3,45 +3,53 @@
 
 {% block content %}
 <div class="ui dividing header page-header">
-	<h1>Comment Moderation</h1>
+    <h1>Comment Moderation</h1>
 </div>
 {% set moderate = True %}
+<!--suppress HtmlUnknownAttribute -->
 <div class="ui comments" wfd-id="196">
-	{% for comment in comments %}
-	<div class="comment" wfd-id="219">
-		<a class="avatar">
-			<img src="{{ url_for('static', filename='profile_pics/' + comment.author.image_file)}}">
-		</a>
-		<div class="content" wfd-id="220">
-			<a class="author">{{comment.author.username}}</a>
-			<div class="metadata" wfd-id="223">
-				<span class="date" wfd-id="224">{{ moment(comment.timestamp).fromNow() }}</span>
-			</div>
+    {% for comment in comments %}
+    <!--suppress HtmlUnknownAttribute -->
+    <div class="comment" wfd-id="219">
+        <a class="avatar">
+            <img src="{{ url_for('static', filename='profile_pics/' + comment.author.image_file)}}">
+        </a>
+        <!--suppress HtmlUnknownAttribute -->
+        <div class="content" wfd-id="220">
+            <a class="author">{{comment.author.username}}</a>
+            <!--suppress HtmlUnknownAttribute -->
+            <div class="metadata" wfd-id="223">
+                <!--suppress HtmlUnknownAttribute -->
+                <span class="date" wfd-id="224">{{ moment(comment.timestamp).fromNow() }}</span>
+            </div>
 
-			{% if comment.disabled %}
-			<div class="meta" wfd-id="222"><i>This comment has been disabled by a moderator.</i></div>
-			{% endif %}
-			{% if moderate or not comment.disabled %}
-			{% if comment.body_html %}
-			<div class="text" wfd-id="222">{{ comment.body_html | safe }}</div>
-			{% else %}
-			<div class="text" wfd-id="222">{{ comment.body }}</div>
-			{% endif %}
-			{% endif %}
-		</div>
-	</div>
+            {% if comment.disabled %}
+            <!--suppress HtmlUnknownAttribute -->
+            <div class="meta" wfd-id="222"><i>This comment has been disabled by a moderator.</i></div>
+            {% endif %}
+            {% if moderate or not comment.disabled %}
+            {% if comment.body_html %}
+            <!--suppress HtmlUnknownAttribute -->
+            <div class="text" wfd-id="222">{{ comment.body_html | safe }}</div>
+            {% else %}
+            <!--suppress HtmlUnknownAttribute -->
+            <div class="text" wfd-id="222">{{ comment.body }}</div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
 
-	{% if moderate %}
-	<br>
-	{% if comment.disabled %}
-	<a class="btn btn-primary btn-xs" href="{{ url_for('.moderate_enable',
+    {% if moderate %}
+    <br>
+    {% if comment.disabled %}
+    <a class="btn btn-primary btn-xs" href="{{ url_for('.moderate_enable',
 				id=comment.id, page=page) }}">Enable</a>
-	{% else %}
-	<a class="btn btn-danger btn-xs" href="{{ url_for('.moderate_disable',
+    {% else %}
+    <a class="btn btn-danger btn-xs" href="{{ url_for('.moderate_disable',
 				id=comment.id, page=page) }}">Disable</a>
-	{% endif %}
-	{% endif %}
-	{% endfor %}
+    {% endif %}
+    {% endif %}
+    {% endfor %}
 
 </div>
 

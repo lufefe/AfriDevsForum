@@ -10,7 +10,7 @@
     <div class="media-body">
         <div class="article-metadata">
             <!--			TODO ***** if user is current_user replace link with edit_profile link -->
-            <a class="mr-2" id="username" href="{{ url_for('users.user_profile', username=post.author.username) }}">{{
+            <a class="mr-2" href="{{ url_for('users.user_profile', username=post.author.username) }}" id="username">{{
                 post.author.username }}</a>
             <!-- displays date in Y-m-d format-->
             <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>

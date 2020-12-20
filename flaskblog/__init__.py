@@ -8,7 +8,7 @@ from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
-from flaskblog.config import *
+from flaskblog.config import DevelopmentConfig, ProductionConfig
 
 db = SQLAlchemy()  # new instance of a database
 migrate = Migrate()  # migrate tracks db changes just like git
@@ -21,33 +21,49 @@ mail = Mail()
 ckeditor = CKEditor()
 bootstrap = Bootstrap()
 moment = Moment()  # for formatting dates
+
+
 # admin = Admin(name = 'Afri Devs Forum', template_mode = 'bootstrap3')
 
-
-def create_app(config_class = DevelopmentConfig):
+# TODO : Change config_class to Production for deployment
+def create_app(config_class = ProductionConfig):
     app = Flask(__name__)
-    app.config.from_object(config_class)
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    app.config['WHOOSH_BASE'] = 'flaskblog/whoosh'
-
     with app.app_context():
-        # admin.init_app(app)
-        db.init_app(app)
-        migrate.init_app(app, db)
-        bcrypt.init_app(app)
-        login_manager.init_app(app)
-        mail.init_app(app)
-        ckeditor.init_app(app)
-        bootstrap.init_app(app)
-        moment.init_app(app)
+        app.config.from_object(config_class)
+        app.config['SECRET_KEY'] = "b8808f5040eea05b1b539e7b3ec64caff56eaba77d57296f"
+        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///sitetest.db"
+        app.config['MAIL_USERNAME'] = 'admin@afridevsforum.com'
+        app.config['MAIL_PASSWORD'] = 'kufktylbnhmyocof'
+        initialize_extensions(app)
+        register_blueprints(app)
+        return app
 
-        from flaskblog.users.routes import users
-        from flaskblog.posts.routes import posts
-        from flaskblog.main.routes import main
-        from flaskblog.error_handler.handlers import errors
-        app.register_blueprint(users)  # users is the Blueprint variable
-        app.register_blueprint(posts)  # posts is the Blueprint variable
-        app.register_blueprint(main)  # main is the Blueprint variable
-        app.register_blueprint(errors)
 
-    return app
+def initialize_extensions(app):
+    # admin.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    mail.init_app(app)
+    ckeditor.init_app(app)
+    bootstrap.init_app(app)
+    moment.init_app(app)
+
+    from flaskblog.models import User
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.filter(User.id == int(user_id)).first()
+
+
+def register_blueprints(app):
+    from flaskblog.users.routes import users
+    from flaskblog.posts.routes import posts
+    from flaskblog.main.routes import main
+    from flaskblog.error_handler.handlers import errors
+
+    app.register_blueprint(users)  # users is the Blueprint variable
+    app.register_blueprint(posts)  # posts is the Blueprint variable
+    app.register_blueprint(main)  # main is the Blueprint variable
+    app.register_blueprint(errors)
