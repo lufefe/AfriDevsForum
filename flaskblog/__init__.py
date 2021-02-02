@@ -31,7 +31,6 @@ def create_app(config_class = ProductionConfig):
     with app.app_context():
         app.config.from_object(config_class)
         app.config['SECRET_KEY'] = "b8808f5040eea05b1b539e7b3ec64caff56eaba77d57296f"
-        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///sitetest.db"
         app.config['MAIL_USERNAME'] = 'admin@afridevsforum.com'
         app.config['MAIL_PASSWORD'] = 'kufktylbnhmyocof'
         initialize_extensions(app)

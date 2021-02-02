@@ -28,7 +28,7 @@ class ProductionConfig(Config):
     # with open('/etc/config.json') as config_file:
     # config = json.load(config_file)
     # SECRET_KEY = config.get('SECRET_KEY')  #
-    # SQLALCHEMY_DATABASE_URI = config.get('SQLALCHEMY_PROD_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = "sqlite:///site.db"
     # FLASK_ENV = 'production'
     """Uses production database server."""
 
