@@ -16,9 +16,15 @@ $(function () {
 
     if ($nav.hasClass('scrolled')){
         document.getElementById('brand-logo').src='/static/site_pics/site_logo_1_trans_orange_512.png';
+        $(".media").css("background-color", "blanchedalmond");
+        $("html").css("background-color", "#201f1f");
+        $("body").css("background-color", "#201f1f");
     }
     else{
         document.getElementById('brand-logo').src='/static/site_pics/site_logo_1_trans.png';
+        $(".media").css("background-color", "white");
+         $("html").css("background-color", "#fffafa");
+        $("body").css("background-color", "#fffafa");
     }
     //document.getElementById('brand-logo').src='/static/site_pics/site_logo_1_trans_orange_512.png';
     });

@@ -37,7 +37,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     TESTING = True
     SECRET_KEY = environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_TEST_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = "sqlite:///sitetest.db"
     MAIL_USERNAME = environ.get('MAIL_USER')
     MAIL_PASSWORD = environ.get('MAIL_PASS')
 

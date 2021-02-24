@@ -26,7 +26,7 @@ moment = Moment()  # for formatting dates
 # admin = Admin(name = 'Afri Devs Forum', template_mode = 'bootstrap3')
 
 # TODO : Change config_class to Production for deployment
-def create_app(config_class = ProductionConfig):
+def create_app(config_class = DevelopmentConfig):
     app = Flask(__name__)
     with app.app_context():
         app.config.from_object(config_class)
