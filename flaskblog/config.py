@@ -3,15 +3,12 @@ from os import environ
 
 class Config(object):
     # Config basics
-    DEBUG = False
-    TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    WHOOSH_BASE = 'flaskblog/whoosh'
 
     # Email config
     MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = 587
     MAIL_USE_TLS = True
+    MAIL_PORT = 587
 
     # Blog parameters
     FLASKY_COMMENTS_PER_PAGE = 4
@@ -21,6 +18,8 @@ class Config(object):
 
 
 class ProductionConfig(Config):
+    DEBUG = False
+    TESTING = False
     """ TODO --> Update config.json file on server :
        1. SQLALCHEMY_PROD_DATABASE_URI
        2. FLASK_ENV
@@ -34,15 +33,10 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
+    FLASK_ENV = 'development'
     DEBUG = True
-    TESTING = True
+    TESTING = False
     SECRET_KEY = environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = "sqlite:///sitetest.db"
+    SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_TEST_DATABASE_URI')
     MAIL_USERNAME = environ.get('MAIL_USER')
     MAIL_PASSWORD = environ.get('MAIL_PASS')
-
-# config = {
-#     'development': DevelopmentConfig,
-#     'production': ProductionConfig,
-#     'default': DevelopmentConfig
-# }

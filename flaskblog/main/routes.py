@@ -1,3 +1,4 @@
+import requests
 from flask import Blueprint, redirect
 from flask import render_template, request, current_app, g, url_for
 from flask_login import current_user
@@ -18,9 +19,25 @@ def before_request():
         g.search_form = SearchForm()
 
 
+# CHECK USER LOCATION - IP ADDRESS.
+def get_user_ip(ip_address):
+    try:
+        response = requests.get(
+            "http://ip-api.com/json/{}?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,mobile,proxy,query".format(
+                ip_address))
+        data = response.json()
+        return data
+    except Exception as e:
+        return "Unknown"
+
+
 @main.route("/")
 @main.route("/home")
 def home():
+    # TODO: use HTTP_X_FORWARDED_FOR to get ip address on nginx (Production)
+    # ip_address = request.remote_addr
+    # user_data = get_user_ip(ip_address)
+
     user_count = db.session.query(User).count()
     post_count = db.session.query(Post).count()
     # we will use the paginate function to limit the number of posts appearing in the home page - ...
@@ -28,15 +45,20 @@ def home():
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page = page,
                                                                   per_page = current_app.config[
                                                                       'FLASKY_POSTS_PER_PAGE'])
-    print(user_count)
+
     # tags = Tag.query.distinct(Tag.name).limit(8)
-    tags = db.session.query(Tag.name).distinct().limit(8)
+    tags = db.session.query(Tag.name).distinct().limit(6)
     return render_template('home.html', posts = posts, tags = tags, user_count = user_count, post_count = post_count)
 
 
 @main.route("/about")
 def about():
     return render_template('about.html', title = 'About')
+
+
+@main.route("/advertising")
+def advertising():
+    return render_template('advertising.html', title = 'Advertising')
 
 
 @main.route("/contact")

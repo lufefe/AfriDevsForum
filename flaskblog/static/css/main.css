@@ -22,7 +22,7 @@ body {
 }
 
 .fixed-top {
-  background-color: rgb(242, 240, 243);
+  background-color: #fffafa;
   /* remove the gradient */
   background-image: none !important;
   line-height: 40px !important;
@@ -101,7 +101,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid #dddddd;
   border-radius: 3px;
   margin-bottom: 20px;
-
+  padding-bottom: 30px;
 }
 
 .article-title {
@@ -208,6 +208,140 @@ a.article-title:hover {
 
 .side-menu .item .menu .column{
     position: relative;
+}
+
+/* Advertising page*/
+
+
+#container {
+  color:#000;
+  text-transform: uppercase;
+  font-size:36px;
+  font-weight:bold;
+  padding-top:200px;
+  position:relative;
+  width:100%;
+  bottom:45%;
+  display:block;
+  top: -50px;
+}
+
+#flip {
+  height:50px;
+  overflow:hidden;
+}
+
+#flip > div > div {
+  color:#fff;
+  padding:0px 12px;
+  height:45px;
+  margin-bottom:45px;
+  display:inline-block;
+}
+
+#flip div:first-child {
+  animation: show 5s linear infinite;
+}
+
+#flip div div {
+  background:#42c58a;
+}
+#flip div:first-child div {
+  background:#4ec7f3;
+}
+#flip div:last-child div {
+  background:#DC143C;
+}
+
+@keyframes show {
+  0% {margin-top:-270px;}
+  5% {margin-top:-180px;}
+  33% {margin-top:-180px;}
+  38% {margin-top:-90px;}
+  66% {margin-top:-90px;}
+  71% {margin-top:0px;}
+  99.99% {margin-top:0px;}
+  100% {margin-top:-270px;}
+}
+
+/* Advertising Side form */
+
+.advert-form {
+  width: 340px;
+  height: 440px;
+  background: #fdf9f4;
+  border-radius: 8px;
+  box-shadow: 0 0 40px -10px #000;
+  margin-bottom: 50px;
+  padding: 20px 30px;
+  max-width: calc(100vw - 40px);
+  box-sizing: border-box;
+  position: relative;
+}
+.advert-form > h2 {
+  margin: 10px 0;
+  padding-bottom: 10px;
+  width: 180px;
+  color: #78788c;
+  border-bottom: 3px solid #78788c;
+}
+.advert-form > p > input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background: none;
+  outline: none;
+  resize: none;
+  border: 0;
+  transition: all 0.3s;
+  border-bottom: 2px solid #bebed2;
+}
+.advert-form > p > input:focus {
+  border-bottom: 2px solid #78788c;
+}
+.advert-form > p:before {
+  content: attr(type);
+  display: block;
+  margin: 28px 0 0;
+  font-size: 14px;
+  color: #5a5a5a;
+}
+.advert-form > button {
+  float: right;
+  padding: 8px 12px;
+  margin: 8px 0 0;
+  border: 2px solid #78788c;
+  background: 0;
+  color: #5a5a6e;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.advert-form > button:hover {
+  background: #78788c;
+  color: #fff;
+}
+.advert-form > div {
+  position: absolute;
+  bottom: -45px;
+  right: -20px;
+  background: #50505a;
+  color: #fff;
+  width: 320px;
+  padding: 16px 4px 16px 0;
+  border-radius: 6px;
+  font-size: 13px;
+  box-shadow: 10px 10px 40px -14px #000;
+}
+.advert-form > div > span {
+  margin: 0 5px 0 15px;
+}
+
+/* Contact Us page */
+#contact-form{
+    background-color: bisque;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 5px;
 }
 
 .contact .row{
@@ -435,7 +569,7 @@ a.article-title:hover {
 @media (min-width: 992px) and (max-width: 1199.98px) {  
 
     .site-header .fixed-top.container .nav a.nav-link {
-        border-top: 4px solid rgb(242, 240, 243);
+        border-top: 4px solid #fffafa;
         transition: border-top .3s;
       }
     .site-header .fixed-top .container .nav a.nav-link:hover {
@@ -456,7 +590,7 @@ a.article-title:hover {
 @media (min-width: 1200px) { 
 
 .site-header .fixed-top .container .nav a.nav-link {
-    border-top: 4px solid rgb(242, 240, 243);
+    border-top: 4px solid #fffafa;
     transition: border-top .3s;
   }
  .site-header .fixed-top .container .nav a.nav-link:hover {

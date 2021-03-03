@@ -1,6 +1,30 @@
 {% extends 'layout.html' %}
+
 {% block content %}
 
+<!-- MODAL BASED ON USER LOCATION - ONLY AFRICA -->
+
+<!--<div class="ui basic modal">-->
+<!--  <div class="ui icon header">-->
+<!--    <i class="globe icon"></i>-->
+<!--    Location Location Location-->
+<!--  </div>-->
+<!--  <div class="content">-->
+<!--    <p>We have noticed that you're not located in the African continent. This application is exclusively for Africans in Africa.</p>-->
+<!--  </div>-->
+<!--    <div class="actions">-->
+<!--    <div class="ui red basic cancel inverted button">-->
+<!--      <i class="remove icon"></i>-->
+<!--      No-->
+<!--    </div>-->
+<!--    <div class="ui green ok inverted button">-->
+<!--      <i class="checkmark icon"></i>-->
+<!--      Yes-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--HOME PAGE POSTS LOAD-->
 {% for post in posts.items %}
 <article class="media content-section">
     <img class="rounded-circle article-img"
@@ -17,10 +41,11 @@
         <!-- anchor tag goes to post route and passes post_id as an argument (passing the id of the selected post) -->
         <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
         {% if post.content|length > 400 %}
-        <p class="article-content">{{ post.content | truncate(400)| safe}}</p> <!-- safe filter is for HTML escaping-->
+        <p class="article-content">{{ post.content |striptags |truncate(400)}}</p>
+        <!-- safe filter is for HTML escaping-->
         <a class="btn btn-outline-info mb-4" href="{{ url_for('posts.post', post_id=post.id) }}">Read more </a>
         {% else %}
-        <p class="article-content">{{ post.content|safe}}</p>
+        <p class="article-content">{{ post.content|striptags }}</p>
         {% endif %}
 
     </div>
@@ -41,7 +66,9 @@
 {% endif %}
 {% endfor %}
 
+
 {% endblock content %}
+
 
 {% block side_bar %}
 <div class="side-menu">
