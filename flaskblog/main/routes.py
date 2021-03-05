@@ -33,7 +33,6 @@ def get_user_ip(ip_address):
         return "Unknown"
 
 
-# TODO - Put API KEY on ENV VARIABLES
 def subscribe_user(email, user_group, api_key):
     resp = requests.post(f"https://api.eu.mailgun.net/v3/lists/{user_group}/members",
                          auth = ("api", api_key),
@@ -62,6 +61,7 @@ def home():
     return render_template('home.html', posts = posts, tags = tags, user_count = user_count, post_count = post_count)
 
 
+# TODO -> You have successfully subscribed message
 @main.route("/subscribe", methods = ["GET", "POST"])
 def subscribe():
     if request.method == "POST":

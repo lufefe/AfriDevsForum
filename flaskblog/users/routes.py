@@ -71,7 +71,7 @@ def register():
         flash('A confirmation email has been sent to you by email.', 'info')
         # flash('Your account has been created! You are now able to log in',
         #     'success')  # messages that pop up, 'success' is used for bootstrap
-        subscribe_user(form.email.data, "devs@app.afridevsforum.com", app.config['MAIL_API_KEY'])
+        subscribe_user(user.email, "devs@app.afridevsforum.com", app.config['MAIL_API_KEY'])
         return redirect(url_for('users.login'))
     return render_template('register.html', title = 'Register', form = form, user_count = user_count)
 
