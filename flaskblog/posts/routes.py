@@ -18,7 +18,7 @@ posts = Blueprint('posts', __name__)
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        cleaned_content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's', 'pre'])
+        cleaned_content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p'])
         create_post = Post(title = form.title.data, content = cleaned_content,
                            author = current_user._get_current_object())
 
@@ -74,7 +74,7 @@ def update_post(post_id):
     form = PostForm()
     if form.validate_on_submit():
         post_update.title = form.title.data
-        post_update.content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p', 's', 'pre'])
+        post_update.content = bleach.clean(form.content.data, tags = bleach.sanitizer.ALLOWED_TAGS + ['p'])
         for i in form.tags.data:
             exists = db.session.query(db.exists().where(Tag.name == i)).scalar()
             if not exists:

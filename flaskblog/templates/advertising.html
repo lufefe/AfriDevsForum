@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div id=container>
+    Advertise on the platform
+    <div id=flip>
+        <div>
+            <div>Ads</div>
+        </div>
+        <div>
+            <div>Sponsored posts</div>
+        </div>
+        <div>
+            <div>Weekly promos</div>
+        </div>
+    </div>
+    Let us grow your brand !
+</div>
+
+{% endblock content %}
+
+
+{% block side_bar %}
+
+<form class="advert-form">
+    <h2>Advertise:</h2>
+    <p>Name:<input type="text" placeholder="Write your name here.."/></p>
+    <p>Email:<input type="text" placeholder="Let us know how to contact you back.."/></p>
+    <p>Message:<input type="text" placeholder="Tell us about your ad prospects.."/></p>
+    <button>Send Message</button>
+    <div>
+        <span class="fa fa-phone"></span>071 895 1191
+        <span class="fa fa-envelope-o"></span> ads@afridevsforum.com
+    </div>
+</form>
+{% endblock side_bar %}

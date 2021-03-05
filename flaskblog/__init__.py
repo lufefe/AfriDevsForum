@@ -8,7 +8,7 @@ from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
-from flaskblog.config import DevelopmentConfig, ProductionConfig
+from flaskblog.config import DevelopmentConfig
 
 db = SQLAlchemy()  # new instance of a database
 migrate = Migrate()  # migrate tracks db changes just like git
@@ -25,17 +25,15 @@ moment = Moment()  # for formatting dates
 
 # admin = Admin(name = 'Afri Devs Forum', template_mode = 'bootstrap3')
 
-# TODO : Change config_class to Production for deployment
-def create_app(config_class = ProductionConfig):
+
+def create_app():
     app = Flask(__name__)
     with app.app_context():
-        app.config.from_object(config_class)
-        app.config['SECRET_KEY'] = "b8808f5040eea05b1b539e7b3ec64caff56eaba77d57296f"
-        app.config['MAIL_USERNAME'] = 'admin@afridevsforum.com'
-        app.config['MAIL_PASSWORD'] = 'kufktylbnhmyocof'
+        # TODO : Change config class to Production for deployment
+        app.config.from_object(DevelopmentConfig)
         initialize_extensions(app)
         register_blueprints(app)
-        return app
+    return app
 
 
 def initialize_extensions(app):
