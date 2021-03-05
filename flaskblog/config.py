@@ -40,3 +40,4 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_TEST_DATABASE_URI')
     MAIL_USERNAME = environ.get('MAIL_USER')
     MAIL_PASSWORD = environ.get('MAIL_PASS')
+    MAIL_API_KEY = environ.get('MAIL_API_KEY')

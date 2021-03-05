@@ -11,6 +11,8 @@ from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountFor
                                    RequestResetForm, ResetPasswordForm, EditProfileAdminForm)
 from flaskblog.users.utils import save_picture, send_reset_email, send_confirmation_email
 
+app = current_app._get_current_object()
+
 users = Blueprint('users', __name__)
 
 try:
@@ -41,6 +43,14 @@ def unconfirmed():
     return render_template('unconfirmed.html')
 
 
+def subscribe_user(email, user_group, api_key):
+    resp = requests.post(f"https://api.eu.mailgun.net/v3/lists/{user_group}/members",
+                         auth = ("api", api_key),
+                         data = {"subscribed": True, "address": email})
+
+    print(resp.status_code)
+
+
 @users.route("/register", methods = ['GET', 'POST'])
 def register():
     user_count = db.session.query(User).count()
@@ -61,6 +71,7 @@ def register():
         flash('A confirmation email has been sent to you by email.', 'info')
         # flash('Your account has been created! You are now able to log in',
         #     'success')  # messages that pop up, 'success' is used for bootstrap
+        subscribe_user(form.email.data, "devs@app.afridevsforum.com", app.config['MAIL_API_KEY'])
         return redirect(url_for('users.login'))
     return render_template('register.html', title = 'Register', form = form, user_count = user_count)
 
@@ -194,7 +205,6 @@ def confirm(token):
         return redirect(url_for('main.home'))
     if current_user.confirm(token):
         db.session.commit()
-        # TODO - Add user email to mailing list
         flash('You have confirmed your account. Thanks!', 'success')
     else:
         flash('The confirmation link is invalid or has expired.', 'warning')

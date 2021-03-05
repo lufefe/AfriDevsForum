@@ -9,6 +9,8 @@ from flaskblog.decorators import admin_required
 from flaskblog.models import Post, Tag, User
 from flaskblog.posts.forms import SearchForm
 
+app = current_app._get_current_object()
+
 main = Blueprint('main', __name__)
 
 
@@ -66,7 +68,7 @@ def subscribe():
         email = request.form.get('submail')
         subscribe_user(email,
                        "newsletter@app.afridevsforum.com",
-                       "e66a4a8eb1cc62f28e9272cbf3c6e9f5-e49cc42c-c264931c")
+                       app.config['MAIL_API_KEY'])
         return redirect(url_for('main.home'))
 
 

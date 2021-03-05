@@ -33,7 +33,6 @@ def create_app():
         app.config.from_object(DevelopmentConfig)
         initialize_extensions(app)
         register_blueprints(app)
-
     return app
 
 
