@@ -194,6 +194,7 @@ def confirm(token):
         return redirect(url_for('main.home'))
     if current_user.confirm(token):
         db.session.commit()
+        # TODO - Add user email to mailing list
         flash('You have confirmed your account. Thanks!', 'success')
     else:
         flash('The confirmation link is invalid or has expired.', 'warning')

@@ -149,14 +149,16 @@
                 <div class="col-lg-3 col-md-6 uk-inline">
                     <h4>Our Newsletter</h4>
                     <p>To receive the latest updates of development in Africa, enter your email: </p>
-                    <form action="" method="post">
+                    <form action="/subscribe" method="post">
                         <div class="uk-inline uk-margin">
                             <!--suppress HtmlUnknownAttribute -->
-                            <span class="uk-form-icon" uk-icon="icon: mail"></span>
-                            <input class="uk-input" name="email" type="email">
+                            <!--                            <span class="uk-form-icon" uk-icon="icon: mail"></span>-->
+                            <input class="uk-input" placeholder="Email address" name="submail" type="email"
+                                   id="submail">
+                            <label id="error_email" style="color: red;"></label>
                         </div>
                         <!--<input type="submit" value="Subscribe">-->
-                        <button class="uk-button uk-button-primary" type="submit">Submit</button>
+                        <button class="uk-button uk-button-primary" type="submit" id="subscribe">Subscribe</button>
                     </form>
                 </div>
             </div>
