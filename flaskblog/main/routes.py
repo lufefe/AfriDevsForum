@@ -1,5 +1,5 @@
 import requests
-from flask import Blueprint, redirect
+from flask import Blueprint, redirect, flash
 from flask import render_template, request, current_app, g, url_for
 from flask_login import current_user
 from sqlalchemy import or_
@@ -69,6 +69,7 @@ def subscribe():
         subscribe_user(email,
                        "newsletter@app.afridevsforum.com",
                        app.config['MAIL_API_KEY'])
+        flash('You have successfully subscribed!', 'success')
         return redirect(url_for('main.home'))
 
 
